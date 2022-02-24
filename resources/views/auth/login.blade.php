@@ -1,48 +1,47 @@
-<x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
+@extends('layouts.master')
 
-        <x-jet-validation-errors class="mb-4" />
+@section('title','登入-')
 
-        @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
+@section('banner')
+<br>
+<br>
+<br>
+<br>
+@endsection
+
+@section('content')
+<div class="row justify-content-center">
+    <div class="col-4">
+        <div class="card">
+            <h4 class="card-header">本機登入</h5>
+            <div class="card-body">
+                <form action="{{ route('auth') }}" method="post" id="this_form">
+                    @csrf
+                <div class="input-group mb-3">
+                    <span class="text-danger">*</span><span class="input-group-text">帳號</span>
+                    <input type="text" class="form-control rq" name="username" autofocus required onclick="change_button2()">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="text-danger">*</span><span class="input-group-text" id="basic-addon2">密碼</span>
+                    <input type="password" class="form-control rq" name="password" required onclick="change_button2()">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="text-danger">*</span><span class="input-group-text" id="basic-addon3">驗證碼</span>
+                    <input type="text" class="form-control rq" name="chaptcha" required onclick="change_button2()">
+                </div>
+                <div class="input-group mb-3">
+                    <img src="{{ route('pic') }}" class="img-fluid" id="captcha_img" onclick="change_img()">
+                </div>
+                @include('layouts.errors')
+                <div class="input-group mb-3 text-right">
+                    <button id="submit_button" class="btn btn-primary" onclick="change_button1()">送出</button>
+                </div>
+                <input type="hidden" name="login_type" value="local">
             </div>
-        @endif
-
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-
-            <div>
-                <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label for="password" value="{{ __('Password') }}" />
-                <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            </div>
-
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-jet-checkbox id="remember_me" name="remember" />
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-jet-button class="ml-4">
-                    {{ __('Log in') }}
-                </x-jet-button>
-            </div>
-        </form>
-    </x-jet-authentication-card>
-</x-guest-layout>
+        </div>
+    </div>
+</div>
+@include('layouts.change_pic')
+@include('layouts.change_button')
+<br>
+@endsection
