@@ -13,14 +13,12 @@
 <h1>使用者管理</h1>
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{{ route('users.index') }}">全部使用者</a>
+      <a class="nav-link" aria-current="page" href="{{ route('users.index') }}">全部使用者</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('users.index2') }}">社教科成員({{ $apply_users }})</a>
+      <a class="nav-link active" href="{{ route('users.index2') }}">社教科成員({{ $apply_users }})</a>
     </li>
 </ul>
-
-<a href="{{ route('users.create') }}" class="btn btn-success btn-sm">新增本機使用者</a>
 
 <table class="table table-striped">
     <thead class="table-light">
@@ -38,7 +36,7 @@
                 職稱
             </th>
             <th>
-                登入
+                狀態
             </th>
             <th>
                 動作
@@ -78,22 +76,40 @@
                 {{ $user->title }}
             </td>
             <td>
-                {{ $user->login_type }}
+                @if($user->social_education===null)
+                    未申請
+                @endif
+                @if($user->social_education===0)
+                    申請中
+                @endif
+                @if($user->social_education===1)
+                    科員 可發佈
+                @endif
+                @if($user->social_education===2)
+                    科長 可審核
+                @endif
             </td>
             <td>
-                @if(empty($user->disable))
-                    <a href="{{ route('users.edit',$user->id) }}" class="btn btn-primary btn-sm">編輯</a>
-                    @if($user->id != auth()->user()->id)
-                        <a href="{{ route('users.able',$user->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('確定停用？')">停用</a>
-                    @endif
-                    @if($user->login_type=="local")
-                        <a href="{{ route('users.back_pwd',$user->id) }}" class="btn btn-dark btn-sm" onclick="return confirm('確定還原密碼為預設 {{ env('DEFAULT_PWD') }}')">還原</a>
-                    @endif
-                    <a href="{{ route('sims.impersonate',$user->id) }}" class="btn btn-secondary btn-sm">模擬</a>
-
-                @else
-                    <a href="{{ route('users.able',$user->id) }}" class="btn btn-info btn-sm" onclick="return confirm('確定啟用？')">啟用</a>
-                @endif
+                <form action="{{ route('users.social_education') }}" method="post">
+                    @csrf
+                    @method('patch')
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <select class="form-control" name="social_education">
+                                    <option value="">未申請</option>
+                                    <option value="0">申請中</option>
+                                    <option value="1">科員</option>
+                                    <option value="2">科長</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                <button class="btn btn-primary btn-sm">更改狀態</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </td>
         </tr>
         @endforeach

@@ -50,6 +50,9 @@ Route::group(['middleware' => 'admin'], function () {
     //模擬登入
     Route::get('sims/{user}/impersonate', [HomeController::class, 'impersonate'])->name('sims.impersonate');
     Route::get('users/index', [UsersController::class, 'index'])->name('users.index');
+    Route::get('users/index2', [UsersController::class, 'index2'])->name('users.index2');
+    Route::patch('users/social_education', [UsersController::class, 'social_education'])->name('users.social_education');
+
     Route::get('users/create', [UsersController::class, 'create'])->name('users.create');
     Route::post('users/store', [UsersController::class, 'store'])->name('users.store');
     Route::get('users/{user}/edit', [UsersController::class, 'edit'])->name('users.edit');
@@ -66,11 +69,18 @@ Route::group(['middleware' => 'school_admin'], function () {
     Route::patch('users/{user}/school_update', [UsersController::class, 'school_update'])->name('users.school_update');
     Route::get('users/{user}/school_able', [UsersController::class, 'school_able'])->name('users.school_able');
 
-
-
 });
 
 
 Route::group(['middleware' => 'all_admin'], function () {
 
+});
+
+
+
+Route::group(['middleware' => 'section'], function () {
+    Route::get('apply_section', [UsersController::class, 'apply_section'])->name('users.apply_section');
+});
+
+Route::group(['middleware' => 'social_education'], function () {
 });

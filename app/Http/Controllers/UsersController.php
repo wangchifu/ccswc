@@ -9,14 +9,44 @@ class UsersController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('disable')->get();
+        $users = User::orderBy('disable')
+            ->orderBy('code')
+            ->get();
+        $apply_users = User::where('login_type','gsuite')
+            ->where('code','079999')
+            ->count();
         $communities = config('ccswc.communities');
         $data = [
             'users' => $users,
             'communities' => $communities,
+            'apply_users'=>$apply_users,
         ];
 
         return view('users.index', $data);
+    }
+
+    public function index2()
+    {
+        $users = User::where('login_type','gsuite')
+            ->where('code','079999')
+            ->get();
+        $apply_users = $users->count();
+        $communities = config('ccswc.communities');
+        $data = [
+            'users' => $users,
+            'communities' => $communities,
+            'apply_users'=>$apply_users,
+        ];
+
+        return view('users.index2', $data);
+    }
+
+    public function social_education(Request $request)
+    {
+        $att['social_education'] = $request->input('social_education');
+        User::where('id',$request->input('user_id'))->update($att);
+        return redirect()->route('users.index2');
+
     }
 
     public function create()
@@ -154,6 +184,13 @@ class UsersController extends Controller
         $user->update($att);
 
         return redirect()->route('users.school_index');
+    }
+
+    public function apply_section()
+    {
+        $att['social_education'] = 0;
+        User::where('id',auth()->user()->id)->update($att);
+        return redirect()->route('index');
     }
     
 }

@@ -48,5 +48,15 @@
         </ul>
         <i class="bi bi-list mobile-nav-toggle d-none"></i>
       </nav><!-- .navbar -->
+      @auth
+      @if(auth()->user()->code=="079999")
+        @if(auth()->user()->social_education === null)
+          <a class="btn btn-primary btn-sm scrollto" href="{{ route('users.apply_section') }}" onclick="return confirm('確定申請嗎？')">申請為社教科成員</a>
+        @endif
+        @if(auth()->user()->social_education === 0)
+          <button class="btn btn-primary btn-sm scrollto" disabled>請耐心等待</button>
+        @endif
+      @endif
+      @endauth
     </div>
   </header><!-- End Header -->
