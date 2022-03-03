@@ -20,15 +20,17 @@ return new class() extends Migration {
             $table->string('code')->nullable(); //gsuite's code
             $table->string('kind')->nullable(); //gsuite's kind
             $table->string('title')->nullable(); //gsuite's title
-            $table->foreignId('current_team_id')->nullable();
             $table->tinyInteger('admin')->nullable(); //1管理者
+            $table->tinyInteger('school_admin')->nullable(); //1社大管理者
             $table->string('name');
             $table->string('email')->nullable();
+            $table->tinyInteger('disable')->nullable(); //1=disable
+            $table->timestamps();
+            //以上未用
+            $table->foreignId('current_team_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->string('profile_photo_path', 2048)->nullable();
-            $table->tinyInteger('disable')->nullable(); //1=disable
-            $table->timestamps();
         });
     }
 

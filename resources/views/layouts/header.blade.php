@@ -30,7 +30,22 @@
           </li>
           @endguest
           @auth
-          <li><a class="nav-link scrollto" href="{{ route('logout') }}" onclick="return confirm('確定登出？')"><span><i class="fas fa-user"></i> {{ auth()->user()->name }} 登出</span></a></li>
+          <li class="dropdown"><a href="#"><span><i class="fas fa-user"></i> {{ auth()->user()->name }}</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>
+              @if(auth()->user()->admin==1)
+              <li><a class="nav-link scrollto" href="{{ route('users.index') }}">使用者管理</a></li>
+              @endif
+              @impersonating
+                <li><a class="nav-link scrollto" href="{{ route('sims.impersonate_leave') }}" onclick="return confirm('確定返回原本帳琥？')">結束模擬</a></li>
+              @endImpersonating
+              @if(auth()->user()->login_type=="local")
+                <li><a class="nav-link scrollto" href="{{ route('users.reset_pwd') }}">更改密碼</a></li>
+              @endif
+              <li><a class="nav-link scrollto" href="{{ route('logout') }}" onclick="return confirm('確定登出？')">登出</a></li>
+            </ul>
+          </li>
+
+          
           @endauth
         </ul>
         <i class="bi bi-list mobile-nav-toggle d-none"></i>

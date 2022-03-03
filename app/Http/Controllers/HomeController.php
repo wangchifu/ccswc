@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -56,5 +57,17 @@ class HomeController extends Controller
         imagettftext($im, 25, 0, 5, 32, $text_color, public_path('font/AdobeGothicStd-Bold.otf'), $cht_key);
         imagegif($im);
         imagedestroy($im);
+    }
+
+    public function impersonate(User $user)
+    {
+        Auth::user()->impersonate($user);
+        return redirect()->route('index');
+    }
+
+    public function impersonate_leave()
+    {
+        Auth::user()->leaveImpersonation();
+        return redirect()->route('index');
     }
 }

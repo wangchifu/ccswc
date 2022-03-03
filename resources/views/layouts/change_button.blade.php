@@ -6,7 +6,7 @@
             $( ".rq" ).each(function() {
                 if($(this).val()==''){
                     alert('必填欄位沒有填');
-                    n = 1;;
+                    n = 1;
                     return false;
                 };
             });

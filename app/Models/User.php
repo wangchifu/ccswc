@@ -9,6 +9,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Lab404\Impersonate\Models\Impersonate;
 
 class User extends Authenticatable
 {
@@ -18,6 +19,7 @@ class User extends Authenticatable
     use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use Impersonate;
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +27,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password', 'username', 'login_type', 'code', 'kind', 'title', 'admin', 'disable',
+        'name', 'email', 'password', 'username', 'login_type', 'code', 'kind', 'title', 'admin', 'school_admin', 'disable',
     ];
 
     /**
