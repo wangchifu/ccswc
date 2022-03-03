@@ -22,18 +22,16 @@
           </li>
           <li><a class="nav-link scrollto" href="index.html#about">網路資源</a></li>
           @guest
-          <li class="dropdown"><a href="#"><span><i class="fas fa-sign-in-alt"></i> 登入</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-            <ul>
-              <li><a class="nav-link scrollto" href="{{ route('login') }}">本機登入</a></li>
-              <li><a class="nav-link scrollto" href="{{ route('g_login') }}">GSuite登入</a></li>
-            </ul>
-          </li>
+          <li><a class="nav-link scrollto" href="{{ route('g_login') }}">GSuite登入</a></li>
           @endguest
           @auth
           <li class="dropdown"><a href="#"><span><i class="fas fa-user"></i> {{ auth()->user()->name }}</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>
+              @if(auth()->user()->school_admin==1)
+                <li><a class="nav-link scrollto" href="{{ route('users.school_index') }}">本校使用者管理</a></li>
+              @endif
               @if(auth()->user()->admin==1)
-              <li><a class="nav-link scrollto" href="{{ route('users.index') }}">使用者管理</a></li>
+                <li><a class="nav-link scrollto" href="{{ route('users.index') }}">使用者管理</a></li>
               @endif
               @impersonating
                 <li><a class="nav-link scrollto" href="{{ route('sims.impersonate_leave') }}" onclick="return confirm('確定返回原本帳琥？')">結束模擬</a></li>

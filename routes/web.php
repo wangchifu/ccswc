@@ -59,3 +59,18 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('users/{user}/back_pwd', [UsersController::class, 'back_pwd'])->name('users.back_pwd');
     
 });
+
+Route::group(['middleware' => 'school_admin'], function () {
+    Route::get('users/school_index', [UsersController::class, 'school_index'])->name('users.school_index');
+    Route::get('users/{user}/school_edit', [UsersController::class, 'school_edit'])->name('users.school_edit');
+    Route::patch('users/{user}/school_update', [UsersController::class, 'school_update'])->name('users.school_update');
+    Route::get('users/{user}/school_able', [UsersController::class, 'school_able'])->name('users.school_able');
+
+
+
+});
+
+
+Route::group(['middleware' => 'all_admin'], function () {
+
+});

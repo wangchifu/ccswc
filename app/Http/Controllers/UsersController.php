@@ -99,5 +99,61 @@ class UsersController extends Controller
 
     }
 
+    public function school_index()
+    {
+        $users = User::where('code',auth()->user()->code)
+            ->orderBy('disable')
+            ->get();
+        $communities = config('ccswc.communities');
+        $data = [
+            'users' => $users,
+            'communities' => $communities,
+        ];
+
+        return view('users.school_index', $data);
+    }
+
+    public function school_edit(User $user)
+    {
+        if(auth()->user()->code <> $user->code){
+            return back();
+        }
+
+
+        $communities = config('ccswc.communities');
+
+        $data = [
+        'communities' => $communities,
+        'user'=>$user,
+        ];
+
+        return view('users.school_edit', $data);
+    }
+
+    public function school_update(Request $request,User $user)
+    {
+        if(auth()->user()->code <> $user->code){
+            return back();
+        }
+
+        $att['title'] = $request->input('title');
+        $att['school_admin'] = (!empty($request->input('school_admin')))?$request->input('school_admin'):null;
+    
+        $user->update($att);
+
+        return redirect()->route('users.school_index');
+    }
+
+    public function school_able(User $user)
+    {
+        if(auth()->user()->code <> $user->code){
+            return back();
+        }
+
+        $att['disable'] = ($user->disable)?null:1;
+        $user->update($att);
+
+        return redirect()->route('users.school_index');
+    }
     
 }
