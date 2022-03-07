@@ -31,4 +31,8 @@ class Post extends Model
     {
         return $this->belongsTo(User::class,'pass_user_id','id');
     }
+
+    public function post_schools() {
+        return $this->hasMany(PostSchool::class);
+    }
 }

@@ -45,7 +45,13 @@
                             未簽收者
                         </th>
                         <td style="color: #000000">
-                            
+                            @foreach($post->post_schools as $post_school)
+                                @if(empty($post_school->signed_at))
+                                    <span class="text-danger">
+                                        {{ $communities[$post_school->code] }},
+                                    </span>
+                                @endif
+                            @endforeach
                         </td>
                     </tr>
                 @endif
