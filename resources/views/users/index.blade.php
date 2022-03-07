@@ -55,13 +55,6 @@
                 @else
                     {{ $communities[$user->code] }}
                 @endif
-                @if ($user->admin==1)
-                    <span class="text-danger">(系統管理者)</span>
-                @endif
-                @if ($user->school_admin==1)
-                <span class="text-danger">(社大管理者)</span>
-            @endif
-
             </td>
             <td>
                 @if (empty($user->disable))
@@ -70,6 +63,20 @@
                     <i class="fas fa-times-circle text-danger"></i>
                 @endif
                 {{ $user->username }}
+                @if($user->code == "079999")
+                    @if($user->social_education==1)
+                        (發佈權)
+                    @endif
+                    @if($user->social_education==2)
+                        (審核權)
+                    @endif
+                @endif
+                @if ($user->admin==1)
+                    <span class="text-danger">(系統管理者)</span>
+                @endif
+                @if ($user->school_admin==1)
+                <span class="text-danger">(社大管理審核者)</span>
+                @endif
             </td>
             <td>
                 {{ $user->name }}

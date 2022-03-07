@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title','使用者管理-')
+@section('title','新增本機使用者-')
 
 @section('banner')
 <br>
@@ -40,7 +40,7 @@
     <div class="form-check">
         <input class="form-check-input" type="checkbox" value="1" name="school_admin" id="school_admin" disabled>
         <label class="form-check-label" for="school_admin">
-          <span class="text-danger">社大管理者</span>
+          <span class="text-danger">社大管理審核者</span>
         </label>
     </div>
     <br>

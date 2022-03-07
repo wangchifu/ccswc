@@ -65,7 +65,7 @@
         @endif
       @endif
         <label class="form-check-label" for="school_admin">
-          <span class="text-danger">社大管理者</span>
+          <span class="text-danger">社大管理審核者</span>
         </label>
     </div>
     <br>

@@ -11,6 +11,7 @@ class UsersController extends Controller
     {
         $users = User::orderBy('disable')
             ->orderBy('code')
+            ->orderBy('login_type')
             ->get();
         $apply_users = User::where('login_type','gsuite')
             ->where('code','079999')
@@ -27,8 +28,8 @@ class UsersController extends Controller
 
     public function index2()
     {
-        $users = User::where('login_type','gsuite')
-            ->where('code','079999')
+        $users = User::where('code','079999')
+            ->orderBy('social_education','DESC')
             ->get();
         $apply_users = $users->count();
         $communities = config('ccswc.communities');

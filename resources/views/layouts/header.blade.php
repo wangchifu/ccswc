@@ -33,6 +33,10 @@
               @if(auth()->user()->admin==1)
                 <li><a class="nav-link scrollto" href="{{ route('users.index') }}">使用者管理</a></li>
               @endif
+              @if(auth()->user()->social_education > 0)
+                <li><a class="nav-link scrollto" href="{{ route('posts.index') }}">公告系統</a></li>
+                <li><a class="nav-link scrollto" href="{{ route('users.index') }}">填報系統</a></li>
+              @endif
               @impersonating
                 <li><a class="nav-link scrollto" href="{{ route('sims.impersonate_leave') }}" onclick="return confirm('確定返回原本帳琥？')">結束模擬</a></li>
               @endImpersonating

@@ -45,6 +45,7 @@
   <script src="{{ asset('venobox/venobox.min.js') }}"></script>
   <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
 
+
   <!-- =======================================================
   * Template Name: HeroBiz - v2.0.0
   * Template URL: https://bootstrapmade.com/herobiz-bootstrap-business-template/
@@ -84,7 +85,15 @@
 
   <!-- Template Main JS File -->
   <script src="{{ asset('HeroBiz/assets/js/main.js') }}"></script>
+  <script>
+    var vb = new VenoBox({
+        selector: '.venobox',
+    });
 
+    $(document).on('click', '.vbox-close', function() {
+        vb.close();
+    });
+</script>
 </body>
 
 </html>

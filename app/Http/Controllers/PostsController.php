@@ -1,0 +1,164 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Post;
+
+class PostsController extends Controller
+{
+    public function index()
+    {
+        $posts = Post::where('user_id',auth()->user()->id)
+            ->orderBy('situation')
+            ->orderBy('passed_at')
+            ->orderBy('id','DESC')
+            ->get();
+        
+        $categories = config('ccswc.categories');
+        $situations = config('ccswc.situations');
+        $types = config('ccswc.types');
+        $data = [
+            'posts'=>$posts,
+            'categories'=>$categories,
+            'situations'=>$situations,
+            'types'=>$types,
+        ];
+        return view('posts.index',$data);
+    }
+
+    public function create()
+    {
+        $communities = config('ccswc.communities');
+        $data = [
+            'communities' => $communities,
+        ];
+        return view('posts.create',$data);
+    }
+
+    public function store(Request $request)
+    {
+        $att['user_id'] = auth()->user()->id;
+        $att['category_id'] = $request->input('category_id');
+        $att['title'] = $request->input('title');
+        $att['content'] = $request->input('content');
+        $att['for_schools'] = null;
+        if($att['category_id'] == 2){
+            $att['for_schools'] = serialize($request->input('schools'));
+        }
+        $att['situation'] = 1;
+        $att['type'] = $request->input('type');
+        $att['views'] = 0;
+        
+        $post = Post::create($att);
+
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+            foreach($files as $file){
+                $info = [
+                    'mime-type' => $file->getMimeType(),
+                    'original_filename' => $file->getClientOriginalName(),
+                    'extension' => $file->getClientOriginalExtension(),
+                ];
+                $file->storeAs('public/posts/'.$post->id, $info['original_filename']);
+                
+            }
+        }
+
+
+        return redirect()->route('posts.index');
+    }
+
+    public function show(Post $post)
+    {
+        $communities = config('ccswc.communities');
+        $categories = config('ccswc.categories');
+        $situations = config('ccswc.situations');
+        $types = config('ccswc.types');
+        if($post->category_id==2){
+            $for_schools = unserialize($post->for_schools);
+        }else{
+            $for_schools = "公開大眾";
+        }
+        
+        $data = [
+            'post'=>$post,
+            'communities'=>$communities,
+            'categories'=>$categories,
+            'situations'=>$situations,
+            'types'=>$types,
+            'for_schools'=>$for_schools,
+        ];
+        
+        return view('posts.show',$data);
+    }
+
+    public function edit(Post $post)
+    {
+        if(auth()->user()->id != $post->user_id){
+            return back();
+        }
+        if($post->situation == "2" or $post->situation == "3"){
+            return back();
+        }
+
+        $communities = config('ccswc.communities');
+        $data = [
+            'communities' => $communities,
+            'post'=>$post,
+        ];
+        return view('posts.edit',$data);
+    }
+
+    public function update(Request $request,Post $post)
+    {
+        
+    }
+
+    public function delete(Post $post)
+    {
+        if(auth()->user()->id != $post->user_id){
+            return back();
+        }
+        if($post->situation == "2" or $post->situation == "3"){
+            return back();
+        }
+
+        if(file_exists(storage_path('app/public/posts/'.$post->id))){
+            deldir(storage_path('app/public/posts/'.$post->id));
+        }
+
+        $post->delete();
+
+        return redirect()->route('posts.index');
+    }
+
+    public function review()
+    {
+        $posts = Post::where('situation','1')
+            ->orderBy('updated_at','DESC')
+            ->get();
+
+        $categories = config('ccswc.categories');
+        $situations = config('ccswc.situations');
+        $types = config('ccswc.types');
+        $data = [
+            'posts'=>$posts,
+            'categories'=>$categories,
+            'situations'=>$situations,
+            'types'=>$types,
+        ];
+        
+        return view('posts.review',$data);
+    }
+
+    public function back(Post $post)
+    {
+        $att['situation'] = 0;
+        $att['passed_at'] = date('Y-m-d H:i:s');
+        $post->update($att);
+        return redirect()->route('posts.review');
+    }
+
+
+}

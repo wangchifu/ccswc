@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\PostsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,6 +36,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 */
 
+//會員可
 Route::group(['middleware' => 'auth'], function () {
     //登出
     Route::get('logout', [LoginController::class, 'logout'])->name('logout');
@@ -46,6 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('sims/impersonate_leave', [HomeController::class, 'impersonate_leave'])->name('sims.impersonate_leave');
 });
 
+//系統管理者可
 Route::group(['middleware' => 'admin'], function () {
     //模擬登入
     Route::get('sims/{user}/impersonate', [HomeController::class, 'impersonate'])->name('sims.impersonate');
@@ -63,6 +66,7 @@ Route::group(['middleware' => 'admin'], function () {
     
 });
 
+//社大管理者可
 Route::group(['middleware' => 'school_admin'], function () {
     Route::get('users/school_index', [UsersController::class, 'school_index'])->name('users.school_index');
     Route::get('users/{user}/school_edit', [UsersController::class, 'school_edit'])->name('users.school_edit');
@@ -71,16 +75,31 @@ Route::group(['middleware' => 'school_admin'], function () {
 
 });
 
-
+//社教科管理者 及 社大管理者可
 Route::group(['middleware' => 'all_admin'], function () {
 
 });
 
+//社教科管理者可
+Route::group(['middleware' => 'social_education_admin'], function () {
+    Route::get('posts/review', [PostsController::class, 'review'])->name('posts.review');
+    Route::get('posts/{post}/back', [PostsController::class, 'back'])->name('posts.back');
+});
 
 
+//教育處人員可
 Route::group(['middleware' => 'section'], function () {
     Route::get('apply_section', [UsersController::class, 'apply_section'])->name('users.apply_section');
 });
 
+
+//社教科人員可
 Route::group(['middleware' => 'social_education'], function () {
+    Route::get('posts/index', [PostsController::class, 'index'])->name('posts.index');
+    Route::get('posts/create', [PostsController::class, 'create'])->name('posts.create');
+    Route::post('posts/store', [PostsController::class, 'store'])->name('posts.store');
+    Route::get('posts/{post}/show', [PostsController::class, 'show'])->name('posts.show');
+    Route::get('posts/{post}/edit', [PostsController::class, 'edit'])->name('posts.edit');
+    Route::patch('posts/{post}/update', [PostsController::class, 'update'])->name('posts.update');
+    Route::get('posts/{post}/delete', [PostsController::class, 'delete'])->name('posts.delete');
 });

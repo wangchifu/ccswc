@@ -24,9 +24,6 @@
     <thead class="table-light">
         <tr>
             <th>
-                群組
-            </th>
-            <th>
                 帳號
             </th>
             <th>
@@ -46,21 +43,6 @@
     <tbody>
         @foreach($users as $user)
         <tr>
-            <td>
-                {{ $user->code }}
-                @if($user->code == "079999")
-                    教育處人員
-                @else
-                    {{ $communities[$user->code] }}
-                @endif
-                @if ($user->admin==1)
-                    <span class="text-danger">(系統管理者)</span>
-                @endif
-                @if ($user->school_admin==1)
-                <span class="text-danger">(社大管理者)</span>
-            @endif
-
-            </td>
             <td>
                 @if (empty($user->disable))
                     <i class="fas fa-check-circle text-success"></i>
@@ -83,10 +65,10 @@
                     申請中
                 @endif
                 @if($user->social_education===1)
-                    科員 可發佈
+                    科員 發佈權
                 @endif
                 @if($user->social_education===2)
-                    科長 可審核
+                    科長 審核權+發佈權
                 @endif
             </td>
             <td>

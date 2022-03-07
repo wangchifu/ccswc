@@ -27,7 +27,7 @@ return new class() extends Migration {
             $table->string('email')->nullable();
             $table->tinyInteger('disable')->nullable(); //1=disable
             $table->timestamps();
-            //以上未用
+            //以下未用
             $table->foreignId('current_team_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
