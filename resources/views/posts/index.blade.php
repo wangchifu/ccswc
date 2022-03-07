@@ -17,11 +17,11 @@
 <hr>
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{{ route('posts.index') }}">我的公告</a>
+      <a class="nav-link active" aria-current="page" href="{{ route('posts.index') }}">我的公告 ({{ $unpass_posts }})</a>
     </li>
     @if(auth()->user()->social_education=="2")
         <li class="nav-item">
-        <a class="nav-link" href="{{ route('posts.review') }}">審核公告</a>
+        <a class="nav-link" href="{{ route('posts.review') }}">審核公告 ({{ $unsign_posts }})</a>
         </li>
     @endif
 </ul>

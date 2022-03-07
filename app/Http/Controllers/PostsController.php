@@ -11,11 +11,21 @@ class PostsController extends Controller
     public function index()
     {
         $posts = Post::where('user_id',auth()->user()->id)
+            ->orderBy('situation')    
             ->orderBy('updated_at','DESC')    
-            ->orderBy('situation')
             ->orderBy('passed_at')
             ->orderBy('id','DESC')
             ->get();
+        
+        $unpass_posts=0;
+        foreach($posts as $post){
+            if($post->situation === 0 or $post->situation === 1){
+                $unpass_posts++;
+            }
+        }
+
+        $unsign_posts = Post::where('situation','1')
+        ->count();
         
         $categories = config('ccswc.categories');
         $situations = config('ccswc.situations');
@@ -25,6 +35,8 @@ class PostsController extends Controller
             'categories'=>$categories,
             'situations'=>$situations,
             'types'=>$types,
+            'unsign_posts'=>$unsign_posts,
+            'unpass_posts'=>$unpass_posts,
         ];
         return view('posts.index',$data);
     }
@@ -234,10 +246,15 @@ class PostsController extends Controller
             ->orderBy('id','DESC')
             ->get();
         
+        $unsign_posts = PostSchool::where('code',auth()->user()->code)
+            ->where('signed_at',null)
+            ->count();
+        
         $categories = config('ccswc.categories');    
         $types = config('ccswc.types');
         $data = [
             'post_schools'=>$post_schools,
+            'unsign_posts'=>$unsign_posts,
             'categories'=>$categories,
             'types'=>$types,
         ];

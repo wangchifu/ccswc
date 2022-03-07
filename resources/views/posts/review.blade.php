@@ -21,7 +21,7 @@
     </li>
     @if(auth()->user()->social_education=="2")
         <li class="nav-item">
-        <a class="nav-link active" href="{{ route('posts.review') }}">審核公告</a>
+        <a class="nav-link active" href="{{ route('posts.review') }}">審核公告 ({{ count($posts) }})</a>
         </li>
     @endif
 </ul>
@@ -90,7 +90,7 @@
             </td>
             <td nowrap>
                 <div class="pass_button">
-                    <a href="{{ route('posts.pass',$post->id) }}" onclick="check_pass();"><i class="fas fa-check-circle text-success"></i></a> --        
+                    <a href="{{ route('posts.pass',$post->id) }}" onclick="return check_pass();"><i class="fas fa-check-circle text-success"></i></a> --        
                     <a href="{{ route('posts.back',$post->id) }}" onclick="return confirm('確定退回？')"><i class="fas fa-chevron-circle-left text-danger"></i></a>
                 </div>
             </td>
@@ -101,7 +101,7 @@
 <br>
 <script>
     function check_pass(){
-        if(confirm('您確定送出嗎?')){
+        if(confirm('您確定要通過嗎?')){
             $('#pass_button').hide();
             return true;
         }else{

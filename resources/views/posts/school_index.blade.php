@@ -12,7 +12,7 @@
 @section('content')
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{{ route('posts.school_index') }}">我的公告</a>
+      <a class="nav-link active" aria-current="page" href="{{ route('posts.school_index') }}">我的公告 ({{ $unsign_posts }})</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" aria-current="page" href="{{ route('posts.school_index') }}">我的調查</a>
@@ -49,8 +49,14 @@
                 {{ $post_school->post->user->name }}
             </td>
             <td>
-                <a href="{{ route('posts.school_show',$post_school->post_id) }}" class="venobox" data-vbtype="iframe" style="color:darkblue">                
-                    [{{ $types[$post_school->post->type] }}]                        
+                @if($post_school->post->type==1)
+                    <span class="text-primary">
+                @elseif($post_school->post->type==2)
+                    <span class="text-danger">
+                @endif
+                [{{ $types[$post_school->post->type] }}]
+                </span>
+                <a href="{{ route('posts.school_show',$post_school->post_id) }}" class="venobox" data-vbtype="iframe" style="color:darkblue">                                      
                     @if($post_school->post->situation===3)
                         <span class="text-danger">[作廢]</span>
                         <span style="text-decoration:line-through;">

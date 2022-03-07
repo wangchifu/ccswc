@@ -15,6 +15,13 @@
                         主旨
                     </th>
                     <td style="color: #000000">
+                        @if($post->type==1)
+                        <span class="text-primary">
+                        @elseif($post->type==2)
+                            <span class="text-danger">
+                        @endif
+                        [{{ $types[$post->type] }}]
+                        </span>
                         @if($post->situation===3)
                         <span class="text-danger">[作廢]</span>
                         <span style="text-decoration:line-through;">
