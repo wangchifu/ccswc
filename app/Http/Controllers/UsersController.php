@@ -13,8 +13,7 @@ class UsersController extends Controller
             ->orderBy('code')
             ->orderBy('login_type')
             ->get();
-        $apply_users = User::where('login_type','gsuite')
-            ->where('code','079999')
+        $apply_users = User::where('code','079999')
             ->count();
         $communities = config('ccswc.communities');
         $data = [

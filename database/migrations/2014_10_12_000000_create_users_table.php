@@ -28,10 +28,10 @@ return new class() extends Migration {
             $table->tinyInteger('disable')->nullable(); //1=disable
             $table->timestamps();
             //以下未用
-            $table->foreignId('current_team_id')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
-            $table->string('profile_photo_path', 2048)->nullable();
+            //$table->foreignId('current_team_id')->nullable();
+            //$table->timestamp('email_verified_at')->nullable();
+            //$table->rememberToken();
+            //$table->string('profile_photo_path', 2048)->nullable();
         });
     }
 

@@ -19,7 +19,16 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('demo1234'),
             'login_type' => 'local',
             'name' => '系統管理員',
-            'current_team_id' => '1',
+            'admin' => '1',
+            'code'=>'079999',
+            ]);
+        \App\Models\user::create([
+            'username' => 'wang',
+            'password' => bcrypt('demo1234'),
+            'login_type' => 'local',
+            'name' => '王老師',
+            'admin' => '1',
+            'code'=>'079999',
             ]);
     }
 }

@@ -15,7 +15,14 @@
                         主旨
                     </th>
                     <td style="color: #000000">
+                        @if($post->situation===3)
+                        <span class="text-danger">[作廢]</span>
+                        <span style="text-decoration:line-through;">
+                        @endif
                         {{ $post->title }}
+                        @if($post->situation===3)
+                        </span>
+                        @endif
                     </td>
                 </tr>
                 <tr>
@@ -62,8 +69,14 @@
                     <th class="text-center" width="20%">
                         內容
                     </th>
-                    <td style="color: #000000">
+                    <td style="color: #000000;style="word-break: break-all;"">
+                        @if($post->situation===3)                        
+                        <span style="text-decoration:line-through;">
+                        @endif
                         {!! $post->content !!}
+                        @if($post->situation===3)
+                        </span>
+                        @endif
                     </td>
                 </tr>
                 @if(file_exists(storage_path('app/public/posts/'.$post->id)))

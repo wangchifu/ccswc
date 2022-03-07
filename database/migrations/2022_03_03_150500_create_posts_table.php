@@ -14,9 +14,9 @@ return new class() extends Migration {
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('pass_user_id')->nullable();
-            $table->unsignedInteger('category_id');//1一般公告,2行政公告
+            $table->unsignedInteger('user_id')->index();
+            $table->unsignedInteger('pass_user_id')->index()->nullable();
+            $table->unsignedInteger('category_id')->index();//1一般公告,2行政公告
             $table->string('title');
             $table->text('content')->nullable();
             $table->text('feedback_reason')->nullable();//退回理由

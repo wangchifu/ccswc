@@ -59,7 +59,13 @@
                 {{ $post->id }}
             </td>
             <td nowrap>
-                {{ $categories[$post->category_id] }}
+                @if($post->category_id==2)
+                <span class="text-danger">
+                @else
+                <span class="text-dark">
+                @endif
+                    {{ $categories[$post->category_id] }}
+                </span>
             </td>
             <td nowrap>
                 {{ $post->user->name }}
@@ -83,12 +89,24 @@
                 {{ $post->created_at }}
             </td>
             <td nowrap>
-                <a href="" onclick="return confirm('確定通過審核？')"><i class="fas fa-check-circle text-success"></i></a> --
-                <a href="{{ route('posts.back',$post->id) }}" onclick="return confirm('確定退回？')"><i class="fas fa-chevron-circle-left text-danger"></i></a>
+                <div class="pass_button">
+                    <a href="{{ route('posts.pass',$post->id) }}" onclick="check_pass();"><i class="fas fa-check-circle text-success"></i></a> --        
+                    <a href="{{ route('posts.back',$post->id) }}" onclick="return confirm('確定退回？')"><i class="fas fa-chevron-circle-left text-danger"></i></a>
+                </div>
             </td>
         </tr>
     @endforeach
     </tbody>
 </table>
 <br>
+<script>
+    function check_pass(){
+        if(confirm('您確定送出嗎?')){
+            $('#pass_button').hide();
+            return true;
+        }else{
+            return false;
+        }
+    }
+</script>
 @endsection

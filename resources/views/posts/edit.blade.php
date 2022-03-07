@@ -14,16 +14,21 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ route('posts.index') }}">公告系統</a></li>
-      <li class="breadcrumb-item active" aria-current="page">新增公告</li>
+      <li class="breadcrumb-item active" aria-current="page">修改公告</li>
     </ol>
   </nav>
-  <form action="{{ route('posts.store') }}" method="post" id="this_form" enctype="multipart/form-data">
+  <form action="{{ route('posts.update',$post->id) }}" method="post" id="this_form" enctype="multipart/form-data">
     @csrf
+    @method('patch')
+    <?php
+      $category_select1 = ($post->category_id==1)?"selected":null;
+      $category_select2 = ($post->category_id==2)?"selected":null;
+    ?>
     <div class="mb-3">
       <label for="category_id" class="form-label"><span class="text-danger">*</span>公告類別</label>
       <select class="form-select" id="category_id" name="category_id" onchange="show()">
-        <option value="1" selected>一般公告(公開)</option>
-        <option value="2">行政公告</option>
+        <option value="1" {{ $category_select1 }}>一般公告(公開)</option>
+        <option value="2" {{ $category_select2 }}>行政公告</option>
       </select>
     </div>
     <?php
@@ -45,12 +50,28 @@
       </div>
     </div>
     
-    <div id="schools" class="mb-3" style="display: none;">
+    <?php 
+      $none = ($post->category_id==2)?null:"display: none;";
+      if($post->category_id==2){
+          $for_schools = unserialize($post->for_schools);
+      }else{
+          $for_schools = null;
+      }
+    ?>
+    <div id="schools" class="mb-3" style="{{ $none }}">
       <label for="category_id" class="form-label"><span class="text-danger">*</span>行政公告對象</label>
       <input type="checkbox" id="all"> <label for="all">全選/全不選</label>
       @foreach($communities as $k=>$v)
+        <?php
+        $checked = null;
+        if($post->category_id==2){
+          if(in_array($k,$for_schools)){
+            $checked = "checked";
+          }
+        }         
+        ?>
         <div class="form-check">
-          <input class="form-check-input ckb" type="checkbox" value="{{ $k }}" id="id{{ $k }}" name="schools[{{ $k }}]" checked>
+          <input class="form-check-input ckb" type="checkbox" value="{{ $k }}" id="id{{ $k }}" name="schools[{{ $k }}]" {{ $checked }}>
           <label class="form-check-label" for="id{{ $k }}">
             {{ $v }}
           </label>
@@ -109,13 +130,18 @@
         language: 'zh_TW',
     });
     </script>
-    
     <div class="mb-3">
+      @if($files)
+        @foreach($files as $k=>$v)
+          <a href="{{ asset('storage/posts/'.$post->id.'/'.$v) }}" target="_blank">{{ $v }}</a> <a href="{{ route('posts.delete_file',['post_id'=>$post->id,'filename'=>$v]) }}" onclick="return confirm('確定刪除此檔？')"><i class="fas fa-times-circle text-danger"></i></a><br>
+        @endforeach
+      @endif
       <label for="files" class="form-label">附加檔案</label>
       <input class="form-control" type="file" id="files" name="files[]" multiple>
     </div>
 
     <div class="mb-3">
+        <a href="#" class="btn btn-secondary" onclick="history.back()">返回</a>
         <button id="submit_button" class="btn btn-primary" onclick="change_button1()">送出</button>
     </div>
     

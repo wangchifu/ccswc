@@ -60,7 +60,13 @@
                 {{ $post->id }}
             </td>
             <td nowrap>
-                {{ $categories[$post->category_id] }}
+                @if($post->category_id==2)
+                <span class="text-danger">
+                @else
+                <span class="text-dark">
+                @endif
+                    {{ $categories[$post->category_id] }}
+                </span>
             </td>
             <td nowrap>
                 {{ $post->user->name }}
@@ -74,14 +80,23 @@
                     @endif
                     [{{ $types[$post->type] }}]
                     </span>
+                    @if($post->situation===3)
+                        <span class="text-danger">[作廢]</span>
+                        <span style="text-decoration:line-through;">
+                    @endif
                     {{ $post->title }}
+                    @if($post->situation===3)
+                        </span>
+                    @endif
                 </a>
             </td>
             <td>
                 @if($post->situation===0)
                     <span class="text-danger">
                 @elseif($post->situation===2)
-                    <span class="text-success">     
+                    <span class="text-success">
+                @elseif($post->situation===3)
+                    <span class="text-warning">
                 @else
                     <span class="text-dark">   
                 @endif
@@ -101,7 +116,7 @@
                     <a href="{{ route('posts.delete',$post->id) }}" onclick="return confirm('確定刪除？')"><i class="fas fa-times-circle text-danger"></i></a>
                 @endif
                 @if($post->situation=="2")
-                    <a href="" onclick="return confirm('確定作廢？')"><i class="fas fa-trash text-danger"></i></a>
+                    <a href="{{ route('posts.trash',$post->id) }}" onclick="return confirm('確定作廢？')"><i class="fas fa-trash text-danger"></i></a>
                 @endif
             </td>
         </tr>

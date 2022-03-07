@@ -83,6 +83,7 @@ Route::group(['middleware' => 'all_admin'], function () {
 //社教科管理者可
 Route::group(['middleware' => 'social_education_admin'], function () {
     Route::get('posts/review', [PostsController::class, 'review'])->name('posts.review');
+    Route::get('posts/{post}/pass', [PostsController::class, 'pass'])->name('posts.pass');
     Route::get('posts/{post}/back', [PostsController::class, 'back'])->name('posts.back');
 });
 
@@ -100,6 +101,8 @@ Route::group(['middleware' => 'social_education'], function () {
     Route::post('posts/store', [PostsController::class, 'store'])->name('posts.store');
     Route::get('posts/{post}/show', [PostsController::class, 'show'])->name('posts.show');
     Route::get('posts/{post}/edit', [PostsController::class, 'edit'])->name('posts.edit');
+    Route::get('posts/{post_id}/delete_file/{filename}', [PostsController::class, 'delete_file'])->name('posts.delete_file');
     Route::patch('posts/{post}/update', [PostsController::class, 'update'])->name('posts.update');
     Route::get('posts/{post}/delete', [PostsController::class, 'delete'])->name('posts.delete');
+    Route::get('posts/{post}/trash', [PostsController::class, 'trash'])->name('posts.trash');
 });

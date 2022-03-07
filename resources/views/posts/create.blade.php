@@ -113,6 +113,7 @@
     </div>
 
     <div class="mb-3">
+        <a href="#" class="btn btn-secondary" onclick="history.back()">返回</a>
         <button id="submit_button" class="btn btn-primary" onclick="change_button1()">送出</button>
     </div>
     
