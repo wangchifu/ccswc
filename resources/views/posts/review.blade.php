@@ -25,7 +25,7 @@
         </li>
     @endif
 </ul>
-<a href="{{ route('posts.create') }}" class="btn btn-success btn-sm">新增公告</a>
+<br><br>
 <table class="table table-striped">
     <thead class="table-light">
     <tr>

@@ -36,13 +36,17 @@
               @if(auth()->user()->social_education > 0)
                 <li><a class="nav-link scrollto" href="{{ route('posts.index') }}">公告系統</a></li>
                 <li><a class="nav-link scrollto" href="{{ route('users.index') }}">填報系統</a></li>
+              @endif   
+              @if(auth()->user()->code <> "079999")
+                <li><a class="nav-link scrollto" href="{{ route('posts.school_index') }}">公告簽收</a></li>
+                <li><a class="nav-link scrollto" href="{{ route('users.index') }}">調查填報</a></li>
+              @endif
+              @if(auth()->user()->login_type=="local")
+                <li><a class="nav-link scrollto" href="{{ route('users.reset_pwd') }}">更改密碼</a></li>
               @endif
               @impersonating
                 <li><a class="nav-link scrollto" href="{{ route('sims.impersonate_leave') }}" onclick="return confirm('確定返回原本帳琥？')">結束模擬</a></li>
               @endImpersonating
-              @if(auth()->user()->login_type=="local")
-                <li><a class="nav-link scrollto" href="{{ route('users.reset_pwd') }}">更改密碼</a></li>
-              @endif
               <li><a class="nav-link scrollto" href="{{ route('logout') }}" onclick="return confirm('確定登出？')">登出</a></li>
             </ul>
           </li>

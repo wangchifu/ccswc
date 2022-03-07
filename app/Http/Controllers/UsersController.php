@@ -143,6 +143,25 @@ class UsersController extends Controller
         return view('users.school_index', $data);
     }
 
+
+    /**
+    public function school_create()
+    {
+        $communities = config('ccswc.communities');
+
+        $data = [
+            'communities' => $communities,
+            ];
+    
+            return view('users.school_create', $data);
+    }
+
+    public function school_store(Request $request)
+    {
+
+    }
+    */
+
     public function school_edit(User $user)
     {
         if(auth()->user()->code <> $user->code){

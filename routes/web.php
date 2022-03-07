@@ -44,6 +44,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('users/reset_pwd', [UsersController::class, 'reset_pwd'])->name('users.reset_pwd');
     Route::patch('users/update_pwd', [UsersController::class, 'update_pwd'])->name('users.update_pwd');
 
+    Route::get('posts/school_index', [PostsController::class, 'school_index'])->name('posts.school_index');
+    Route::get('posts/{post}/school_show', [PostsController::class, 'school_show'])->name('posts.school_show');
+    Route::get('posts/{post_school}/school_sign', [PostsController::class, 'school_sign'])->name('posts.school_sign');
+
     //結束模擬
     Route::get('sims/impersonate_leave', [HomeController::class, 'impersonate_leave'])->name('sims.impersonate_leave');
 });

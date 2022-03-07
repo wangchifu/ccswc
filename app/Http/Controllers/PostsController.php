@@ -228,5 +228,45 @@ class PostsController extends Controller
         return redirect()->route('posts.review');
     }
 
+    public function school_index()
+    {
+        $post_schools = PostSchool::where('code',auth()->user()->code)        
+            ->orderBy('id','DESC')
+            ->get();
+        
+        $categories = config('ccswc.categories');    
+        $types = config('ccswc.types');
+        $data = [
+            'post_schools'=>$post_schools,
+            'categories'=>$categories,
+            'types'=>$types,
+        ];
+        return view('posts.school_index',$data);
+    }
+
+    public function school_show(Post $post)
+    {    
+        $situations = config('ccswc.situations');
+        $types = config('ccswc.types');
+        
+        $data = [
+            'post'=>$post,            
+            'situations'=>$situations,
+            'types'=>$types,
+        ];
+        
+        return view('posts.school_show',$data);
+    }
+
+    public function school_sign(PostSchool $post_school)
+    {
+        $att['signed_user_id'] = auth()->user()->id;
+        $att['signed_at'] = date('Y-m-d H:i:s');
+        
+        $post_school->update($att);
+
+        return redirect()->route('posts.school_index');
+    }
+
 
 }
