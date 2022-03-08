@@ -10,18 +10,19 @@
 @endsection
 
 @section('content')
-<div class="btn-group">
-    <a href="#" class="btn btn-secondary active" aria-current="page">公告系統</a>
-    <a href="#" class="btn btn-secondary">填報系統</a>
-</div>
-<hr>
 <ul class="nav nav-tabs">
     <li class="nav-item">
       <a class="nav-link" aria-current="page" href="{{ route('posts.index') }}">我的公告</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="{{ route('posts.index') }}">我的填報</a>
+      </li>
     @if(auth()->user()->social_education=="2")
         <li class="nav-item">
         <a class="nav-link active" href="{{ route('posts.review') }}">審核公告 ({{ count($posts) }})</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{{ route('posts.review') }}">審核填報 ({{ $unsign_posts }})</a>
         </li>
     @endif
 </ul>
