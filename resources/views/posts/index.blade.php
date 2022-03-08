@@ -15,14 +15,14 @@
       <a class="nav-link active" aria-current="page" href="{{ route('posts.index') }}">我的公告 ({{ $unpass_posts }})</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="{{ route('posts.index') }}">我的填報 ({{ $unpass_posts }})</a>
+        <a class="nav-link" aria-current="page" href="{{ route('reports.index') }}">我的填報 ()</a>
       </li>
     @if(auth()->user()->social_education=="2")
         <li class="nav-item">
-        <a class="nav-link" href="{{ route('posts.review') }}">審核公告 ({{ $unsign_posts }})</a>
+        <a class="nav-link" href="{{ route('posts.review') }}">審核公告 ({{ $unreview_posts }})</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="{{ route('posts.review') }}">審核填報 ({{ $unsign_posts }})</a>
+        <a class="nav-link" href="{{ route('reports.review') }}">審核填報 ()</a>
         </li>
     @endif
 </ul>
@@ -124,5 +124,6 @@
     @endforeach
     </tbody>
 </table>
+{{ $posts->links() }}
 <br>
 @endsection

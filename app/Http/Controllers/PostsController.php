@@ -15,16 +15,15 @@ class PostsController extends Controller
             ->orderBy('updated_at','DESC')    
             ->orderBy('passed_at')
             ->orderBy('id','DESC')
-            ->get();
-        
-        $unpass_posts=0;
-        foreach($posts as $post){
-            if($post->situation === 0 or $post->situation === 1){
-                $unpass_posts++;
-            }
-        }
+            ->paginate(10);
 
-        $unsign_posts = Post::where('situation','1')
+        $unpass_posts = Post::where('user_id',auth()->user()->id)
+            ->where(function($query){
+                $query->where('situation','0');
+                $query->orwhere('situation','1');
+            })->count();
+
+        $unreview_posts = Post::where('situation','1')
         ->count();
         
         $categories = config('ccswc.categories');
@@ -35,7 +34,7 @@ class PostsController extends Controller
             'categories'=>$categories,
             'situations'=>$situations,
             'types'=>$types,
-            'unsign_posts'=>$unsign_posts,
+            'unreview_posts'=>$unreview_posts,
             'unpass_posts'=>$unpass_posts,
         ];
         return view('posts.index',$data);
@@ -199,6 +198,12 @@ class PostsController extends Controller
             ->orderBy('updated_at','DESC')
             ->get();
 
+        $unpass_posts = Post::where('user_id',auth()->user()->id)
+        ->where(function($query){
+            $query->where('situation','0');
+            $query->orwhere('situation','1');
+        })->count();
+
         $categories = config('ccswc.categories');
         $situations = config('ccswc.situations');
         $types = config('ccswc.types');
@@ -207,6 +212,7 @@ class PostsController extends Controller
             'categories'=>$categories,
             'situations'=>$situations,
             'types'=>$types,
+            'unpass_posts'=>$unpass_posts,
         ];
         
         return view('posts.review',$data);

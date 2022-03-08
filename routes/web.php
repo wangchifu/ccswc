@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\ReportsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -89,6 +90,8 @@ Route::group(['middleware' => 'social_education_admin'], function () {
     Route::get('posts/review', [PostsController::class, 'review'])->name('posts.review');
     Route::get('posts/{post}/pass', [PostsController::class, 'pass'])->name('posts.pass');
     Route::get('posts/{post}/back', [PostsController::class, 'back'])->name('posts.back');
+
+    Route::get('reports/review', [ReportsController::class, 'review'])->name('reports.review');
 });
 
 
@@ -109,4 +112,10 @@ Route::group(['middleware' => 'social_education'], function () {
     Route::patch('posts/{post}/update', [PostsController::class, 'update'])->name('posts.update');
     Route::get('posts/{post}/delete', [PostsController::class, 'delete'])->name('posts.delete');
     Route::get('posts/{post}/trash', [PostsController::class, 'trash'])->name('posts.trash');
+
+    Route::get('reports/index', [ReportsController::class, 'index'])->name('reports.index');
+    Route::get('reports/create', [ReportsController::class, 'create'])->name('reports.create');
+    Route::post('reports/store', [ReportsController::class, 'store'])->name('reports.store');
+    Route::get('reports/{report}/show', [ReportsController::class, 'show'])->name('reports.show');
+    Route::get('reports/{report}/edit', [ReportsController::class, 'edit'])->name('reports.edit');
 });
