@@ -35,7 +35,7 @@
               @endif
               @if(auth()->user()->social_education > 0)
                 <li><a class="nav-link scrollto" href="{{ route('posts.index') }}">公告系統</a></li>
-                <li><a class="nav-link scrollto" href="{{ route('users.index') }}">填報系統</a></li>
+                <li><a class="nav-link scrollto" href="{{ route('reports.index') }}">填報系統</a></li>
               @endif   
               @if(auth()->user()->code <> "079999")
                 <li><a class="nav-link scrollto" href="{{ route('posts.school_index') }}">公告簽收</a></li>

@@ -44,7 +44,7 @@
     
     <div id="schools" class="mb-3" style="display: none;">
       <label for="category_id" class="form-label"><span class="text-danger">*</span>行政公告對象</label>
-      <input type="checkbox" id="all"> <label for="all">全選/全不選</label>
+      <input type="checkbox" id="all" checked> <label for="all">全選/全不選</label>
       @foreach($communities as $k=>$v)
         <div class="form-check">
           <input class="form-check-input ckb" type="checkbox" value="{{ $k }}" id="id{{ $k }}" name="schools[{{ $k }}]" checked>
@@ -78,8 +78,8 @@
       
     </script>
     <div class="mb-3">
-        <label for="" class="form-label"><span class="text-danger">*</span>公告主旨</label>
-        <input type="text" class="form-control rq" id="username" name="title" required onclick="change_button2()">
+        <label for="title" class="form-label"><span class="text-danger">*</span>公告主旨</label>
+        <input type="text" class="form-control rq" id="title" name="title" required onclick="change_button2()">
     </div>
 
     <div class="mb-3">
@@ -121,6 +121,5 @@
     
   </form>
 
-  @include('users.form_script')
 <br>
 @endsection
