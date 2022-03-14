@@ -118,6 +118,8 @@ Route::group(['middleware' => 'social_education'], function () {
     Route::post('reports/store', [ReportsController::class, 'store'])->name('reports.store');
     Route::get('reports/{report}/show', [ReportsController::class, 'show'])->name('reports.show');
     Route::get('reports/{report}/edit', [ReportsController::class, 'edit'])->name('reports.edit');
+    Route::get('reports/{report_id}/delete_file/{filename}', [ReportsController::class, 'delete_file'])->name('reports.delete_file');
+    Route::patch('reports/{report}/update', [ReportsController::class, 'update'])->name('reports.update');
 
     Route::get('reports/{report}/delete', [ReportsController::class, 'delete'])->name('reports.delete');
     Route::get('reports/{report}/trash', [ReportsController::class, 'trash'])->name('reports.trash');

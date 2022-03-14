@@ -74,7 +74,7 @@ class ReportsController extends Controller
 
         foreach($request->input('question_title') as $k=>$v){
             $att2['title'] = $v;
-            $type = $request->input('type');
+            $type = $request->input('question_type');
             $att2['type'] = $type[$k];
             if($att2['type']=="radio" or $att2['type'] == "checkbox"){
                 $options = serialize($request->input('option'.$k));
@@ -90,6 +90,76 @@ class ReportsController extends Controller
 
 
         return redirect()->route('reports.index');
+    }
+
+    public function edit(Report $report)
+    {
+        $communities = config('ccswc.communities');
+        $question_types = config('ccswc.question_types');
+        $files = (file_exists(storage_path('app/public/reports/'.$report->id)))?
+            get_files(storage_path('app/public/reports/'.$report->id)):"";
+        $data = [
+            'communities' => $communities,
+            'question_types'=>$question_types,
+            'report'=>$report,
+            'files'=>$files,
+        ];
+        return view('reports.edit',$data);
+    }
+
+    public function update(Request $request,Report $report)
+    {        
+        $att['for_schools'] = serialize($request->input('schools'));
+        $att['title'] = $request->input('title');
+        $att['die_date'] = $request->input('die_date');
+        $att['content'] = $request->input('content');
+        $att['situation'] = 1;
+        $report->update($att);
+
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+            foreach($files as $file){
+                $info = [
+                    'mime-type' => $file->getMimeType(),
+                    'original_filename' => $file->getClientOriginalName(),
+                    'extension' => $file->getClientOriginalExtension(),
+                ];
+                $file->storeAs('public/reports/'.$report->id, $info['original_filename']);
+                
+            }
+        }
+
+        //原先所有的題目先軟刪除
+        $a['show'] = 0;
+        $qs = Question::where('report_id',$report->id)->update($a);
+
+
+        foreach($request->input('question_title') as $k=>$v){
+            $att2['title'] = $v;
+            $type = $request->input('question_type');
+            $att2['type'] = $type[$k];
+            if($att2['type']=="radio" or $att2['type'] == "checkbox"){
+                $options = serialize($request->input('option'.$k));
+            }elseif($att2['type']=="text" or $att2['type']=="num"){
+                $options = null;
+            }
+            $att2['options'] = $options;
+
+            $att2['report_id'] = $report->id;
+            $att2['show'] = 1;
+            Question::create($att2);
+        }
+
+
+        return redirect()->route('reports.index');
+    }
+
+    public function delete_file($report_id,$filename)
+    {
+        if(file_exists(storage_path('app/public/reports/'.$report_id.'/'.$filename))){
+            unlink(storage_path('app/public/reports/'.$report_id.'/'.$filename));
+        }
+        return redirect()->route('reports.edit',$report_id);
     }
 
     public function delete(Report $report)
