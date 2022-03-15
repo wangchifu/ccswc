@@ -19,11 +19,16 @@ class ReportSchool extends Model
 
     public function report()
     {
-        return $this->belongsTo(Report::class,'report_id','id');
+        return $this->belongsTo(Report::class, 'report_id', 'id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class,'signed_user_id','id');
+        return $this->belongsTo(User::class, 'signed_user_id', 'id');
+    }
+
+    public function review_user()
+    {
+        return $this->belongsTo(User::class, 'review_user_id', 'id');
     }
 }

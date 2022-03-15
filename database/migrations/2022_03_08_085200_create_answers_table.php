@@ -16,7 +16,8 @@ return new class() extends Migration {
             $table->increments('id');
             $table->text('answer');
             $table->unsignedInteger('report_id');
-            $table->unsignedInteger('question_id');//題目            
+            $table->unsignedInteger('question_id'); //題目
+            $table->unsignedInteger('report_school_id');
             $table->string('code');
             $table->timestamps();
         });

@@ -11,7 +11,8 @@ class Answer extends Model
     protected $fillable = [
         'answer',
         'report_id',
-        'question_id',        
+        'question_id',   
+        'report_school_id',     
         'code',
     ];
 

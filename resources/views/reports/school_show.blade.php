@@ -103,21 +103,22 @@
                                         <span>
                                             @if($question->type=="radio")
                                                 <?php $checked=($k==0)?"checked":""; ?>
-                                                <input type="radio" name="radio" id="id{{ $question->id }}{{ $k }}" {{ $checked }} required>
+                                                <input type="radio" name="answer[{{ $question->id }}]" id="id{{ $question->id }}{{ $k }}" {{ $checked }} required>
                                             @elseif($question->type=="checkbox")
-                                                <input type="checkbox" name="checkbox" id="id{{ $question->id }}{{ $k }}" checked>
+                                                <input type="checkbox" name="answer_checkbox{{ $question->id }}[]" id="id{{ $question->id }}{{ $k }}" checked>
                                             @endif
                                             <label for="id{{ $question->id }}{{ $k }}">{{ $v }}</label>
                                         </span><br>
                                     @endforeach
                                 @elseif($question->type=="text")
-                                    <input type="text" placeholder="填寫文字" required>
+                                    <input type="text" name="answer[{{ $question->id }}]" placeholder="填寫文字" required>
                                 @elseif($question->type=="num")
-                                    <input type="number" placeholder="填寫數字" required>
+                                    <input type="number" name="answer[{{ $question->id }}]" placeholder="填寫數字" required>
                                 @endif
                             </div>
                         </div>
                         <?php $i++; ?>
+                        <input type="hidden" name="type[{{ $question->id }}]" value="{{ $question->type }}">
                         @endforeach
                         <button class="btn btn-primary btn-sm" onclick="return confirm('確定資料正確嗎？')">送出</button>
                         </form>

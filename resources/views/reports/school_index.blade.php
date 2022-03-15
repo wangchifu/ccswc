@@ -83,15 +83,24 @@
                 @endif
             </td>
             <td nowrap>
-                @if(empty($report_school->signed_at))
-                <a href="{{ route('reports.school_show',$report_school->report->id) }}" class="venobox btn btn-success btn-sm" data-vbtype="iframe">填報</a>
-                <a href="" class="btn btn-danger btn-sm" onclick="return confirm('確定不填報？')">不填報</a>                    
-                @else
+                @if($report_school->situation == null)
+                    <a href="{{ route('reports.school_show',$report_school->report->id) }}" class="venobox btn btn-success btn-sm" data-vbtype="iframe">填報</a>
+                @endif               
+                @if(($report_school->situation == 1 or $report_school->situation === 0) and $report_school->signed_user_id==auth()->user()->id)
+                    <a href="" class="venobox btn btn-primary btn-sm" data-vbtype="iframe">編輯</a>
+                @endif
+                @if($report_school->situation == 1 or $report_school->situation == 2 or $report_school->situation === 0)
                     {{ $report_school->user->name }}
                 @endif
+                @if($report_school->situation == 2 or $report_school->situation === 0)
+                    審：{{ $report_school->review_user->name }}<br>
+                    <small>{{ $report_school->updated_at }}</small>
+                @endif
                 @if($report_school->situation=="1" and auth()->user()->school_admin=="1")
-                    <a href="" class="btn btn-primary btn-sm" onclick="return confirm('確定通過審核？')">通過</a>
-                    <a href="" class="btn btn-dark btn-sm" onclick="return confirm('確定通過審核？')">退回</a>
+                    <hr>
+                    <a href="" class="btn btn-outline-success btn-sm">檢視</a>
+                    <a href="" class="btn btn-outline-primary btn-sm" onclick="return confirm('確定通過審核？')">通過</a>
+                    <a href="" class="btn btn-outline-dark btn-sm" onclick="return confirm('確定通過審核？')">退回</a>
                 @endif
             </td>
         </tr>
