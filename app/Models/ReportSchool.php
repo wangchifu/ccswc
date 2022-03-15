@@ -12,7 +12,9 @@ class ReportSchool extends Model
         'report_id',
         'code',
         'signed_user_id',
+        'review_user_id',
         'signed_at',
+        'situation',
     ];
 
     public function report()

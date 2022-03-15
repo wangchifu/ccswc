@@ -12,17 +12,17 @@
 @section('content')
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{{ route('posts.index') }}">我的公告 ({{ $unpass_posts }})</a>
+      <a class="nav-link active" aria-current="page" href="{{ route('posts.index') }}">我的公告 <i class="fas fa-cog"></i> ({{ $unpass_posts }})</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="{{ route('reports.index') }}">我的填報 ()</a>
+        <a class="nav-link" aria-current="page" href="{{ route('reports.index') }}">我的填報 <i class="fas fa-pen"></i> ({{ $unpass_reports }})</a>
       </li>
     @if(auth()->user()->social_education=="2")
         <li class="nav-item">
-        <a class="nav-link" href="{{ route('posts.review') }}">審核公告 ({{ $unreview_posts }})</a>
+        <a class="nav-link" href="{{ route('posts.review') }}">審核公告 <i class="fas fa-user-cog"></i> ({{ $unreview_posts }})</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="{{ route('reports.review') }}">審核填報 ()</a>
+        <a class="nav-link" href="{{ route('reports.review') }}">審核填報 <i class="fas fa-user-edit"></i> ({{ $unreview_reports }})</a>
         </li>
     @endif
 </ul>

@@ -15,7 +15,7 @@
       <a class="nav-link active" aria-current="page" href="{{ route('posts.school_index') }}">我的公告 ({{ $unsign_posts }})</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="{{ route('posts.school_index') }}">我的調查</a>
+        <a class="nav-link" aria-current="page" href="{{ route('reports.school_index') }}">我的調查 ({{ $unsign_reports }})</a>
     </li>
 </ul>
 <table class="table table-striped">

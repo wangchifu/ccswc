@@ -20,7 +20,8 @@ return new class() extends Migration {
             $table->string('die_date');
             $table->text('content')->nullable();            
             $table->text('for_schools')->nullable();//給誰
-            $table->tinyInteger('situation');//1已送出未審核；2已審核送出；3作廢；0退回                    
+            $table->tinyInteger('situation');//1已送出未審核；2已審核送出；3作廢；0退回  
+            $table->tinyInteger('type')->nullable();//null為一般 1為急件                  
             $table->timestamp('passed_at')->nullable();
             $table->timestamps();
         });

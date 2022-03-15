@@ -39,7 +39,7 @@
               @endif   
               @if(auth()->user()->code <> "079999")
                 <li><a class="nav-link scrollto" href="{{ route('posts.school_index') }}">公告簽收</a></li>
-                <li><a class="nav-link scrollto" href="{{ route('users.index') }}">調查填報</a></li>
+                <li><a class="nav-link scrollto" href="{{ route('reports.school_index') }}">調查填報</a></li>
               @endif
               @if(auth()->user()->login_type=="local")
                 <li><a class="nav-link scrollto" href="{{ route('users.reset_pwd') }}">更改密碼</a></li>

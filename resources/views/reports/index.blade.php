@@ -12,17 +12,17 @@
 @section('content')
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link" aria-current="page" href="{{ route('posts.index') }}">我的公告 ({{ $unpass_posts }})</a>
+      <a class="nav-link" aria-current="page" href="{{ route('posts.index') }}">我的公告 <i class="fas fa-cog"></i> ({{ $unpass_posts }})</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{ route('reports.index') }}">我的填報 ()</a>
+        <a class="nav-link active" aria-current="page" href="{{ route('reports.index') }}">我的填報 <i class="fas fa-pen"></i> ({{ $unpass_reports }})</a>
       </li>
     @if(auth()->user()->social_education=="2")
         <li class="nav-item">
-        <a class="nav-link" href="{{ route('posts.review') }}">審核公告 ({{ $unreview_posts }})</a>
+        <a class="nav-link" href="{{ route('posts.review') }}">審核公告 <i class="fas fa-user-cog"></i> ({{ $unreview_posts }})</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="{{ route('reports.review') }}">審核填報 ()</a>
+        <a class="nav-link" href="{{ route('reports.review') }}">審核填報 <i class="fas fa-user-edit"></i> ({{ $unreview_reports }})</a>
         </li>
     @endif
 </ul>
@@ -61,7 +61,23 @@
                 {{ $report->user->name}}
             </td>
             <td>
-                {{ $report->title}}
+                <a href="{{ route('reports.show',$report->id) }}" class="venobox" data-vbtype="iframe" style="color:darkblue">
+                    @if($report->type==1)
+                        <span class="text-primary">
+                    @elseif($report->type==2)
+                        <span class="text-danger">
+                    @endif
+                    [{{ $types[$report->type] }}]
+                    </span>
+                    @if($report->situation===3)
+                        <span class="text-danger">[作廢]</span>
+                        <span style="text-decoration:line-through;">
+                    @endif
+                    {{ $report->title }}
+                    @if($report->situation===3)
+                        </span>
+                    @endif
+                </a>
             </td>
             <td>
                 @if($report->situation===0)

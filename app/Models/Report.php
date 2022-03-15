@@ -16,7 +16,8 @@ class Report extends Model
         'die_date',
         'content',        
         'for_schools',
-        'situation',            
+        'situation',   
+        'type',
         'passed_at',
     ];
 

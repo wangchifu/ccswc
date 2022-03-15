@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Report;
 use App\Models\PostSchool;
+use App\Models\ReportSchool;
 
 class PostsController extends Controller
 {
@@ -25,6 +27,16 @@ class PostsController extends Controller
 
         $unreview_posts = Post::where('situation','1')
         ->count();
+
+        $unpass_reports = Report::where('user_id',auth()->user()->id)
+            ->where(function($query){
+                $query->where('situation','0');
+                $query->orwhere('situation','1');
+            })->count();
+
+        $unreview_reports = Report::where('situation','1')
+        ->count();
+
         
         $categories = config('ccswc.categories');
         $situations = config('ccswc.situations');
@@ -36,6 +48,8 @@ class PostsController extends Controller
             'types'=>$types,
             'unreview_posts'=>$unreview_posts,
             'unpass_posts'=>$unpass_posts,
+            'unreview_reports'=>$unreview_reports,
+            'unpass_reports'=>$unpass_reports,
         ];
         return view('posts.index',$data);
     }
@@ -204,15 +218,32 @@ class PostsController extends Controller
             $query->orwhere('situation','1');
         })->count();
 
+        $unreview_posts = Post::where('situation','1')
+        ->count();
+
+        $unpass_reports = Report::where('user_id',auth()->user()->id)
+            ->where(function($query){
+                $query->where('situation','0');
+                $query->orwhere('situation','1');
+            })->count();
+
+        $unreview_reports = Report::where('situation','1')
+        ->count();
+
         $categories = config('ccswc.categories');
         $situations = config('ccswc.situations');
         $types = config('ccswc.types');
+
+    
         $data = [
             'posts'=>$posts,
             'categories'=>$categories,
             'situations'=>$situations,
             'types'=>$types,
+            'unreview_posts'=>$unreview_posts,
             'unpass_posts'=>$unpass_posts,
+            'unreview_reports'=>$unreview_reports,
+            'unpass_reports'=>$unpass_reports,
         ];
         
         return view('posts.review',$data);
@@ -255,12 +286,17 @@ class PostsController extends Controller
         $unsign_posts = PostSchool::where('code',auth()->user()->code)
             ->where('signed_at',null)
             ->count();
+
+        $unsign_reports = ReportSchool::where('code',auth()->user()->code)
+        ->where('signed_at',null)
+        ->count();
         
         $categories = config('ccswc.categories');    
         $types = config('ccswc.types');
         $data = [
             'post_schools'=>$post_schools,
             'unsign_posts'=>$unsign_posts,
+            'unsign_reports'=>$unsign_reports,
             'categories'=>$categories,
             'types'=>$types,
         ];

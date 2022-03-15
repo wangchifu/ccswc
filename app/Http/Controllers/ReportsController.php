@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Report;
+use App\Models\PostSchool;
+use App\Models\ReportSchool;
 use App\Models\Question;
 
 class ReportsController extends Controller
@@ -12,15 +14,25 @@ class ReportsController extends Controller
     public function index()
     {
         $situations = config('ccswc.situations');
+        $types = config('ccswc.types');
+
+        $unpass_posts = Post::where('user_id',auth()->user()->id)
+            ->where(function($query){
+                $query->where('situation','0');
+                $query->orwhere('situation','1');
+            })->count();
 
         $unreview_posts = Post::where('situation','1')
         ->count();
 
-        $unpass_posts = Post::where('user_id',auth()->user()->id)
-        ->where(function($query){
-            $query->where('situation','0');
-            $query->orwhere('situation','1');
-        })->count();
+        $unpass_reports = Report::where('user_id',auth()->user()->id)
+            ->where(function($query){
+                $query->where('situation','0');
+                $query->orwhere('situation','1');
+            })->count();
+
+        $unreview_reports = Report::where('situation','1')
+        ->count();
 
 
         $reports = Report::where('user_id',auth()->user()->id)
@@ -32,8 +44,11 @@ class ReportsController extends Controller
 
         $data = [
             'situations'=>$situations,
+            'types'=>$types,
             'unreview_posts'=>$unreview_posts,
             'unpass_posts'=>$unpass_posts,
+            'unreview_reports'=>$unreview_reports,
+            'unpass_reports'=>$unpass_reports,
             'reports'=>$reports,
         ];
         return view('reports.index',$data);
@@ -57,6 +72,8 @@ class ReportsController extends Controller
         $att['die_date'] = $request->input('die_date');
         $att['content'] = $request->input('content');
         $att['situation'] = 1;
+        $att['type'] = $request->input('type');
+
         $report = Report::create($att);
 
         if ($request->hasFile('files')) {
@@ -92,6 +109,26 @@ class ReportsController extends Controller
         return redirect()->route('reports.index');
     }
 
+    public function show(Report $report)
+    {
+        $communities = config('ccswc.communities');
+        $categories = config('ccswc.categories');
+        $situations = config('ccswc.situations');
+        $types = config('ccswc.types');
+        $for_schools = unserialize($report->for_schools);
+        
+        $data = [
+            'report'=>$report,
+            'communities'=>$communities,
+            'categories'=>$categories,
+            'situations'=>$situations,
+            'types'=>$types,
+            'for_schools'=>$for_schools,
+        ];
+        
+        return view('reports.show',$data);
+    }
+
     public function edit(Report $report)
     {
         $communities = config('ccswc.communities');
@@ -114,6 +151,7 @@ class ReportsController extends Controller
         $att['die_date'] = $request->input('die_date');
         $att['content'] = $request->input('content');
         $att['situation'] = 1;
+        $att['type'] = $request->input('type');
         $report->update($att);
 
         if ($request->hasFile('files')) {
@@ -130,8 +168,11 @@ class ReportsController extends Controller
         }
 
         //原先所有的題目先軟刪除
+        /*
         $a['show'] = 0;
         $qs = Question::where('report_id',$report->id)->update($a);
+        */
+        Question::where('report_id',$report->id)->delete();
 
 
         foreach($request->input('question_title') as $k=>$v){
@@ -178,6 +219,126 @@ class ReportsController extends Controller
             $report->update($att);
         }
         return redirect()->route('reports.index');
+    }
+
+    public function review()
+    {
+        $reports = Report::where('situation','1')
+            ->orderBy('updated_at','DESC')
+            ->get();
+
+        $unpass_posts = Post::where('user_id',auth()->user()->id)
+        ->where(function($query){
+            $query->where('situation','0');
+            $query->orwhere('situation','1');
+        })->count();
+
+        $unreview_posts = Post::where('situation','1')
+        ->count();
+
+        $unpass_reports = Report::where('user_id',auth()->user()->id)
+            ->where(function($query){
+                $query->where('situation','0');
+                $query->orwhere('situation','1');
+            })->count();
+
+        $unreview_reports = Report::where('situation','1')
+        ->count();
+
+        $categories = config('ccswc.categories');
+        $situations = config('ccswc.situations');
+        $types = config('ccswc.types');
+        $data = [
+            'reports'=>$reports,
+            'categories'=>$categories,
+            'situations'=>$situations,
+            'types'=>$types,
+            'unreview_posts'=>$unreview_posts,
+            'unpass_posts'=>$unpass_posts,
+            'unreview_reports'=>$unreview_reports,
+            'unpass_reports'=>$unpass_reports,
+        ];
+        
+        return view('reports.review',$data);
+    }
+
+    public function back(Report $report)
+    {
+        $att['situation'] = 0;
+        $att['passed_at'] = date('Y-m-d H:i:s');
+        $report->update($att);
+        return redirect()->route('reports.review');
+    }
+
+    public function pass(Report $report)
+    {
+        $att['situation'] = 2;
+        $att['passed_at'] = date('Y-m-d H:i:s');
+        $report->update($att);
+
+        $for_schools = unserialize($report->for_schools);
+            if(!empty($for_schools)){
+                foreach($for_schools as $k=>$v){
+                    $att2['report_id'] = $report->id;
+                    $att2['code'] = $k;
+                    ReportSchool::create($att2);
+                }
+            }
+
+        return redirect()->route('reports.review');
+    }
+
+    public function school_index()
+    {
+        $report_schools = ReportSchool::where('code',auth()->user()->code)        
+            ->orderBy('id','DESC')
+            ->get();
+        
+        $unsign_posts = PostSchool::where('code',auth()->user()->code)
+        ->where('signed_at',null)
+        ->count();
+
+        $unsign_reports = ReportSchool::where('code',auth()->user()->code)
+        ->where('signed_at',null)
+        ->count();
+        
+        $categories = config('ccswc.categories');    
+        $types = config('ccswc.types');
+        $data = [
+            'report_schools'=>$report_schools,
+            'unsign_posts'=>$unsign_posts,
+            'unsign_reports'=>$unsign_reports,
+            'categories'=>$categories,
+            'types'=>$types,
+        ];
+        return view('reports.school_index',$data);
+    }
+
+    public function school_show(Report $report)
+    {    
+        $situations = config('ccswc.situations');
+        $types = config('ccswc.types');
+        $report_school = ReportSchool::where('code',auth()->user()->code)
+        ->where('report_id',$report->id)
+        ->first();
+        
+        $data = [
+            'report'=>$report,            
+            'report_school'=>$report_school,
+            'situations'=>$situations,
+            'types'=>$types,
+        ];
+        
+        return view('reports.school_show',$data);
+    }
+
+    public function school_sign(Request $request,ReportSchool $report_school)
+    {
+        if($report_school->code == auth()->user()->code){
+            $att['situation'] = 1;
+            $report_school->update($att);
+        }        
+        return route('reports.school_index');
     }
 
 

@@ -49,6 +49,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('posts/{post}/school_show', [PostsController::class, 'school_show'])->name('posts.school_show');
     Route::get('posts/{post_school}/school_sign', [PostsController::class, 'school_sign'])->name('posts.school_sign');
 
+    Route::get('reports/school_index', [ReportsController::class, 'school_index'])->name('reports.school_index');
+    Route::get('reports/{report}/school_show', [ReportsController::class, 'school_show'])->name('reports.school_show');
+    Route::post('reports/{report_school}/school_sign', [ReportsController::class, 'school_sign'])->name('reports.school_sign');
+
     //結束模擬
     Route::get('sims/impersonate_leave', [HomeController::class, 'impersonate_leave'])->name('sims.impersonate_leave');
 });
@@ -92,6 +96,8 @@ Route::group(['middleware' => 'social_education_admin'], function () {
     Route::get('posts/{post}/back', [PostsController::class, 'back'])->name('posts.back');
 
     Route::get('reports/review', [ReportsController::class, 'review'])->name('reports.review');
+    Route::get('reports/{report}/pass', [ReportsController::class, 'pass'])->name('reports.pass');
+    Route::get('reports/{report}/back', [ReportsController::class, 'back'])->name('reports.back');
 });
 
 
