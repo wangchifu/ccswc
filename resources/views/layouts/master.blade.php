@@ -88,9 +88,11 @@
   <script>
     var vb = new VenoBox({
         selector: '.venobox',
+        overlayClose:false,
     });
 
     $(document).on('click', '.vbox-close', function() {
+        window.location.reload();
         vb.close();
     });
 </script>

@@ -16,7 +16,7 @@
       <li class="breadcrumb-item"><a href="{{ route('reports.index') }}">填報系統</a></li>
       <li class="breadcrumb-item active" aria-current="page">新增填報</li>
     </ol>
-  </nav>
+</nav>
   <form action="{{ route('reports.store') }}" method="post" id="this_form" enctype="multipart/form-data">
     @csrf
     <div class="mb-3">

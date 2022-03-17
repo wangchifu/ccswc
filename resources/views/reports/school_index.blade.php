@@ -82,26 +82,39 @@
                     {{ $report_school->signed_at }}
                 @endif
             </td>
-            <td nowrap>
-                @if($report_school->situation == null)
-                    <a href="{{ route('reports.school_show',$report_school->report->id) }}" class="venobox btn btn-success btn-sm" data-vbtype="iframe">填報</a>
+            <td nowrap>                
+                @if($report_school->situation === null)
+                    @if(str_replace('-','',$report_school->report->die_date) >= date('Ymd'))
+                        <a href="{{ route('reports.school_show',$report_school->report->id) }}" class="venobox btn btn-success btn-sm" data-vbtype="iframe">填報</a>
+                    @else
+                        <span class="text-danger">未填報</span>
+                    @endif
+                @else
+                    <a href="{{ route('reports.school_view',$report_school->report->id) }}" class="venobox btn btn-outline-success btn-sm" data-vbtype="iframe">檢視</a>                        
                 @endif               
+
                 @if(($report_school->situation == 1 or $report_school->situation === 0) and $report_school->signed_user_id==auth()->user()->id)
-                    <a href="" class="venobox btn btn-primary btn-sm" data-vbtype="iframe">編輯</a>
+                    @if(str_replace('-','',$report_school->report->die_date) >= date('Ymd'))
+                        <a href="{{ route('reports.school_edit',$report_school->report->id) }}" class="venobox btn btn-primary btn-sm" data-vbtype="iframe">編輯</a>                                    
+                    @else
+                        <span class="text-danger">未通過而逾期</span>
+                    @endif
                 @endif
                 @if($report_school->situation == 1 or $report_school->situation == 2 or $report_school->situation === 0)
                     {{ $report_school->user->name }}
                 @endif
-                @if($report_school->situation == 2 or $report_school->situation === 0)
-                    審：{{ $report_school->review_user->name }}<br>
+                @if($report_school->situation == 2 or $report_school->situation === 0)                        
+                    <hr>
+                    審：{{ $report_school->review_user->name}}<br>
                     <small>{{ $report_school->updated_at }}</small>
                 @endif
                 @if($report_school->situation=="1" and auth()->user()->school_admin=="1")
-                    <hr>
-                    <a href="" class="btn btn-outline-success btn-sm">檢視</a>
-                    <a href="" class="btn btn-outline-primary btn-sm" onclick="return confirm('確定通過審核？')">通過</a>
-                    <a href="" class="btn btn-outline-dark btn-sm" onclick="return confirm('確定通過審核？')">退回</a>
-                @endif
+                    @if(str_replace('-','',$report_school->report->die_date) >= date('Ymd'))
+                        <hr>                        
+                        <a href="{{ route('reports.school_pass',$report_school->id) }}" class="btn btn-outline-primary btn-sm" onclick="return confirm('確定通過審核？')">通過</a>
+                        <a href="{{ route('reports.school_back',$report_school->id) }}" class="btn btn-outline-dark btn-sm" onclick="return confirm('確定退回重寫嗎？')">退回</a>
+                    @endif
+                @endif               
             </td>
         </tr>
     @endforeach

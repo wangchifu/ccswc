@@ -52,6 +52,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('reports/school_index', [ReportsController::class, 'school_index'])->name('reports.school_index');
     Route::get('reports/{report}/school_show', [ReportsController::class, 'school_show'])->name('reports.school_show');
     Route::post('reports/{report_school}/school_sign', [ReportsController::class, 'school_sign'])->name('reports.school_sign');
+    Route::get('reports/{report}/school_edit', [ReportsController::class, 'school_edit'])->name('reports.school_edit');
+    Route::post('reports/{report_school}/school_update', [ReportsController::class, 'school_update'])->name('reports.school_update');    
+    Route::get('reports/{report}/school_view', [ReportsController::class, 'school_view'])->name('reports.school_view');
+
 
     //結束模擬
     Route::get('sims/impersonate_leave', [HomeController::class, 'impersonate_leave'])->name('sims.impersonate_leave');
@@ -81,6 +85,9 @@ Route::group(['middleware' => 'school_admin'], function () {
     Route::get('users/{user}/school_edit', [UsersController::class, 'school_edit'])->name('users.school_edit');
     Route::patch('users/{user}/school_update', [UsersController::class, 'school_update'])->name('users.school_update');
     Route::get('users/{user}/school_able', [UsersController::class, 'school_able'])->name('users.school_able');
+    
+    Route::get('reports/{report_school}/school_pass', [ReportsController::class, 'school_pass'])->name('reports.school_pass');
+    Route::get('reports/{report_school}/school_back', [ReportsController::class, 'school_back'])->name('reports.school_back');
 
 });
 
@@ -129,4 +136,5 @@ Route::group(['middleware' => 'social_education'], function () {
 
     Route::get('reports/{report}/delete', [ReportsController::class, 'delete'])->name('reports.delete');
     Route::get('reports/{report}/trash', [ReportsController::class, 'trash'])->name('reports.trash');
+    Route::get('reports/{report}/excel', [ReportsController::class, 'excel'])->name('reports.excel');
 });

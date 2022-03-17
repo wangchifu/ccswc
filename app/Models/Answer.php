@@ -20,4 +20,9 @@ class Answer extends Model
     {
         return $this->belongsTo(ReportSchool::class);
     }
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
+    }
 }

@@ -81,10 +81,10 @@
                         題目
                     </th>
                     <td>
-                        <form action="{{ route('reports.school_sign',$report_school->id) }}" method="post">
+                        <form action="{{ route('reports.school_update',$report_school->id) }}" method="post">
                         @csrf
                         <?php  $i=1; ?>
-                        @foreach($report->questions as $question)
+                        @foreach($report->questions as $question)                        
                         <div class="card" style="margin: 5px;">
                             <div class="card-header">
                                 題目{{ $i }}：
@@ -102,18 +102,19 @@
                                     @foreach($options as $k=>$v)
                                         <span>
                                             @if($question->type=="radio")
-                                                <?php $checked=($k==0)?"checked":""; ?>
+                                                <?php $checked=($v==$answer[$question->id])?"checked":""; ?>
                                                 <input type="radio" name="answer[{{ $question->id }}]" id="id{{ $question->id }}{{ $k }}" {{ $checked }} value="{{ $v }}" required>
                                             @elseif($question->type=="checkbox")
-                                                <input type="checkbox" name="answer_checkbox{{ $question->id }}[]" id="id{{ $question->id }}{{ $k }}" value="{{ $v }}" checked>
+                                                <?php $checked=(in_array($v,$answer[$question->id]))?"checked":""; ?>
+                                                <input type="checkbox" name="answer_checkbox{{ $question->id }}[]" id="id{{ $question->id }}{{ $k }}" value="{{ $v }}" {{ $checked }}>
                                             @endif
                                             <label for="id{{ $question->id }}{{ $k }}">{{ $v }}</label>
                                         </span><br>
                                     @endforeach
                                 @elseif($question->type=="text")
-                                    <input type="text" name="answer[{{ $question->id }}]" placeholder="填寫文字" required>
+                                    <input type="text" name="answer[{{ $question->id }}]" placeholder="填寫文字" value="{{ $answer[$question->id] }}" required>
                                 @elseif($question->type=="num")
-                                    <input type="number" name="answer[{{ $question->id }}]" placeholder="填寫數字" required>
+                                    <input type="number" name="answer[{{ $question->id }}]" placeholder="填寫數字" value="{{ $answer[$question->id] }}" required>
                                 @endif
                             </div>
                         </div>

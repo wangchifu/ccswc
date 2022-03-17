@@ -83,7 +83,7 @@ class ReportsController extends Controller
             $files = $request->file('files');
             foreach ($files as $file) {
                 $info = [
-                    'mime-type' => $file->getMimeType(),
+                    //'mime-type' => $file->getMimeType(),
                     'original_filename' => $file->getClientOriginalName(),
                     'extension' => $file->getClientOriginalExtension(),
                 ];
@@ -160,7 +160,7 @@ class ReportsController extends Controller
             $files = $request->file('files');
             foreach ($files as $file) {
                 $info = [
-                    'mime-type' => $file->getMimeType(),
+                    //'mime-type' => $file->getMimeType(),
                     'original_filename' => $file->getClientOriginalName(),
                     'extension' => $file->getClientOriginalExtension(),
                 ];
@@ -211,6 +211,36 @@ class ReportsController extends Controller
         }
 
         return redirect()->route('reports.index');
+    }
+
+    public function excel(Report $report)
+    {
+        $communities = config('ccswc.communities');
+        $for_schools = unserialize($report->for_schools);
+        $answers = Answer::where('report_id',$report->id)
+            ->get();
+        
+        foreach($answers as $answer){
+            $all_answers[$answer->code][$answer->question_id] = $answer->answer;
+        }
+        
+        $report_signed = [];
+        foreach($report->report_schools as $report_school){
+            if($report_school->signed_user_id){
+                $report_signed[$report_school->code]['name'] = $report_school->user->name;
+                $report_signed[$report_school->code]['updated_at'] = $report_school->updated_at;
+            }            
+        }        
+        
+        $data = [
+            'communities'=>$communities,
+            'report'=>$report,
+            'for_schools'=>$for_schools,
+            'all_answers'=>$all_answers,
+            'report_signed'=>$report_signed,
+        ];
+
+        return view('reports.excel',$data);
     }
 
     public function trash(Report $report)
@@ -346,7 +376,7 @@ class ReportsController extends Controller
         }
 
         $answer = $request->input('answer');
-
+    
         foreach ($request->input('type') as $k => $v) {
             if ($v == 'checkbox') {
                 $att2['answer'] = '';
@@ -360,8 +390,135 @@ class ReportsController extends Controller
             $att2['question_id'] = $k;
             $att2['report_school_id'] = $report_school->id;
             $att2['code'] = auth()->user()->code;
-            Answer::create($att2);
+            
+            //檢查是否已填過
+            $check = Answer::where('report_id',$att2['report_id'])
+            ->where('question_id',$k)
+            ->where('report_school_id',$att2['report_school_id'])
+            ->where('code',$att2['code'])
+            ->first();
+            if(empty($check)){
+                Answer::create($att2);
+            }        
         }
-        echo '<img src="'.asset('images/ok.png').'" width="32"> 儲存完畢，請按右上角 X 關閉子視窗。 <img src="'.asset('images/cross.png').'" width="32">';
+        echo '儲存完畢，<span style="color:red;">請按右上角 X 關閉子視窗</span>。 <img src="'.asset('images/cross.png').'" width="20">';
     }
+
+    public function school_edit(Report $report)
+    {    
+        $situations = config('ccswc.situations');
+        $types = config('ccswc.types');
+        $report_school = ReportSchool::where('code', auth()->user()->code)
+        ->where('report_id', $report->id)
+        ->first();
+
+        $all_answers = Answer::where('report_school_id',$report_school->id)
+            ->where('code',auth()->user()->code)
+            ->get();
+
+        foreach($all_answers as $all_answer){
+            if($all_answer->question->type=="checkbox"){            
+                $answer[$all_answer->question_id] = unserialize($all_answer->answer);
+            }else{
+                $answer[$all_answer->question_id] = $all_answer->answer;
+            }
+        }
+
+        $data = [
+            'report' => $report,
+            'report_school' => $report_school,
+            'situations' => $situations,
+            'types' => $types,
+            'answer'=>$answer,
+        ];
+
+        return view('reports.school_edit', $data);
+    }
+
+    public function school_update(Request $request, ReportSchool $report_school)
+    {
+        if ($report_school->code == auth()->user()->code) {
+            $att['situation'] = 1;
+            $att['signed_user_id'] = auth()->user()->id;
+            $att['signed_at'] = date('Y-m-d H:i:s');
+            $report_school->update($att);
+        }
+
+        $answer = $request->input('answer');        
+
+        foreach ($request->input('type') as $k => $v) {
+            if ($v == 'checkbox') {
+                $att2['answer'] = '';
+                if (!empty($request->input('answer_checkbox'.$k))) {
+                    $att2['answer'] = serialize($request->input('answer_checkbox'.$k));
+                }
+            } else {
+                $att2['answer'] = $answer[$k];
+            }            
+
+            $att2['report_id'] = $report_school->report_id;
+            $att2['question_id'] = $k;
+            $att2['report_school_id'] = $report_school->id;
+            $att2['code'] = auth()->user()->code;
+            
+            
+            $update_answer= Answer::where('report_id',$att2['report_id'])
+            ->where('question_id',$k)
+            ->where('report_school_id',$att2['report_school_id'])
+            ->where('code',$att2['code'])
+            ->first();                    
+            
+            $update_answer->update($att2);
+        }
+        echo '更新完畢，<span style="color:red;">請按右上角 X 關閉子視窗</span>。 <img src="'.asset('images/cross.png').'" width="20">';
+    }
+
+    public function school_view(Report $report)
+    {    
+        $situations = config('ccswc.situations');
+        $types = config('ccswc.types');
+        $report_school = ReportSchool::where('code', auth()->user()->code)
+        ->where('report_id', $report->id)
+        ->first();
+
+        $all_answers = Answer::where('report_school_id',$report_school->id)
+            ->where('code',auth()->user()->code)
+            ->get();
+
+        foreach($all_answers as $all_answer){
+            if($all_answer->question->type=="checkbox"){            
+                $answer[$all_answer->question_id] = unserialize($all_answer->answer);
+            }else{
+                $answer[$all_answer->question_id] = $all_answer->answer;
+            }
+        }
+
+        $data = [
+            'report' => $report,
+            'report_school' => $report_school,
+            'situations' => $situations,
+            'types' => $types,
+            'answer'=>$answer,
+        ];
+
+        return view('reports.school_view', $data);
+    }
+
+    public function school_back(ReportSchool $report_school)
+    {
+        $att['situation'] = 0;
+        $att['review_user_id'] = auth()->user()->id;
+        $report_school->update($att);
+
+        return redirect()->route('reports.school_index');
+    } 
+    
+    public function school_pass(ReportSchool $report_school)
+    {
+        $att['situation'] = 2;
+        $att['review_user_id'] = auth()->user()->id;        
+        $report_school->update($att);
+
+        return redirect()->route('reports.school_index');
+    }    
 }

@@ -80,48 +80,30 @@
                     <th class="text-center" width="20%">
                         題目
                     </th>
-                    <td>
-                        <form action="{{ route('reports.school_sign',$report_school->id) }}" method="post">
-                        @csrf
-                        <?php  $i=1; ?>
-                        @foreach($report->questions as $question)
+                    <td>                
+                        <?php  $i=1; ?>        
+                        @foreach($report->questions as $question)                        
                         <div class="card" style="margin: 5px;">
                             <div class="card-header">
                                 題目{{ $i }}：
                                 {{ $question->title }}
                             </div>
                             <div class="card-body">
-                                @if($question->type=="radio" or $question->type=="checkbox")
-                                    <?php $options = unserialize($question->options); ?>
-                                        @if($question->type=="radio")
-                                            <strong>單選選項：</strong>
-                                        @elseif($question->type=="checkbox")
-                                            <strong>多選選項：</strong>
+                                答：
+                                @if($question->type=="checkbox")     
+                                <?php $options = unserialize($question->options); ?>                               
+                                    @foreach($options as $k=>$v)                                    
+                                        @if(in_array($v,$answer[$question->id]))
+                                            {{ $v }},
                                         @endif
-                                        <br>
-                                    @foreach($options as $k=>$v)
-                                        <span>
-                                            @if($question->type=="radio")
-                                                <?php $checked=($k==0)?"checked":""; ?>
-                                                <input type="radio" name="answer[{{ $question->id }}]" id="id{{ $question->id }}{{ $k }}" {{ $checked }} value="{{ $v }}" required>
-                                            @elseif($question->type=="checkbox")
-                                                <input type="checkbox" name="answer_checkbox{{ $question->id }}[]" id="id{{ $question->id }}{{ $k }}" value="{{ $v }}" checked>
-                                            @endif
-                                            <label for="id{{ $question->id }}{{ $k }}">{{ $v }}</label>
-                                        </span><br>
                                     @endforeach
-                                @elseif($question->type=="text")
-                                    <input type="text" name="answer[{{ $question->id }}]" placeholder="填寫文字" required>
-                                @elseif($question->type=="num")
-                                    <input type="number" name="answer[{{ $question->id }}]" placeholder="填寫數字" required>
+                                @else
+                                    {{ $answer[$question->id] }}
                                 @endif
                             </div>
-                        </div>
-                        <?php $i++; ?>
-                        <input type="hidden" name="type[{{ $question->id }}]" value="{{ $question->type }}">
-                        @endforeach
-                        <button class="btn btn-primary btn-sm" onclick="return confirm('確定資料正確嗎？')">送出</button>
-                        </form>
+                        </div>           
+                        <?php  $i++; ?>             
+                        @endforeach                        
                     </td>
                 </tr>
             </tbody>
