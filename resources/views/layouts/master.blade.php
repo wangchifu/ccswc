@@ -65,7 +65,7 @@
       <div class="container">
         @yield('content')
       </div>
-    </section>
+    </section>    
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

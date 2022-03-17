@@ -105,7 +105,7 @@
                     <a href="{{ route('reports.delete',$report->id) }}" onclick="return confirm('確定刪除？')"><i class="fas fa-times-circle text-danger"></i></a>
                 @endif
                 @if($report->situation=="2")
-                    <a href="{{ route('reports.excel',$report->id) }}"><i class="fas fa-file-excel text-success"></i></a> -- 
+                    <a href="{{ route('reports.excel',$report->id) }}"><i class="fas fa-table text-success"></i></a> -- 
                     <a href="{{ route('reports.trash',$report->id) }}" onclick="return confirm('確定作廢？')"><i class="fas fa-trash text-danger"></i></a>
                 @endif
             </td>

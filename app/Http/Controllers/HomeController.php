@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -21,7 +22,40 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('index');
+        $posts = Post::where('situation',2)
+            ->where('category_id',1)
+            ->orderBy('updated_at','DESC')                
+            ->paginate(10);
+        
+        $data = [
+            'posts'=>$posts,
+        ];
+
+        return view('index',$data);
+    }
+
+    public function show(Post $post)
+    {
+        if($post->category_id == 2){
+            return back();
+        }
+
+        $post_key = 'post' . $post->id;
+        if (session($post_key) != 1) {
+            //更新views的值
+            $att['views'] = $post->views + 1;
+            $post->update($att);
+        }
+
+        session([$post_key => 1]);
+
+        $types = config('ccswc.types');
+
+        $data = [
+            'post'=>$post,
+            'types'=>$types,
+        ];
+        return view('index_show',$data);
     }
 
     public function pic($d = null)

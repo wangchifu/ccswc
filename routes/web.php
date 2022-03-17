@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('create_admin', [HomeController::class, 'create_admin'])->name('create_admin');
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
+Route::get('show/{post}', [HomeController::class, 'show'])->name('show');
 
 //gsuite登入
 Route::get('g_login', [LoginController::class, 'g_login'])->name('g_login');
