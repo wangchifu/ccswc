@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Content;
+use App\Models\Community;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -151,5 +152,129 @@ class HomeController extends Controller
         }
 
         return redirect()->route('history.view');
+    }
+
+    public function community_view()
+    {
+        $communities = config('ccswc.communities');
+        $communities_data = Community::all();
+        $community_array = [];
+        foreach ($communities_data as $community) {
+            $community_array[$community->code]['school_name'] = $community->school_name;
+            $community_array[$community->code]['telephone_number'] = $community->telephone_number;
+            $community_array[$community->code]['unit'] = $community->unit;
+            $community_array[$community->code]['website'] = $community->website;
+        }
+        $data = [
+            'communities' => $communities,
+            'community_array' => $community_array,
+        ];
+        return view('communities.view', $data);
+    }
+
+    public function community_show($code)
+    {
+        $communities = config('ccswc.communities');
+
+        $community = Community::where('code', $code)
+            ->first();
+        $community_array = [];
+        if (!empty($community)) {
+            $community_array[$community->code]['school_name'] = $community->school_name;
+            $community_array[$community->code]['principal_name'] = $community->principal_name;
+            $community_array[$community->code]['address'] = $community->address;
+            $community_array[$community->code]['telephone_number'] = $community->telephone_number;
+            $community_array[$community->code]['fax_number'] = $community->fax_number;
+            $community_array[$community->code]['email'] = $community->email;
+            $community_array[$community->code]['branch'] = $community->branch;
+            $community_array[$community->code]['class_location'] = $community->class_location;
+            $community_array[$community->code]['website'] = $community->website;
+            $community_array[$community->code]['unit'] = $community->unit;
+            $community_array[$community->code]['introduction'] = $community->introduction;
+        } else {
+            $community_array[$code]['school_name'] = "";
+            $community_array[$code]['principal_name'] = "";
+            $community_array[$code]['address'] = "";
+            $community_array[$code]['telephone_number'] = "";
+            $community_array[$code]['fax_number'] = "";
+            $community_array[$code]['email'] = "";
+            $community_array[$code]['branch'] = "";
+            $community_array[$code]['class_location'] = "";
+            $community_array[$code]['website'] = "";
+            $community_array[$code]['unit'] = "";
+            $community_array[$code]['introduction'] = "";
+        }
+
+        $data = [
+            'code' => $code,
+            'community' => $community,
+            'communities' => $communities,
+            'community_array' => $community_array,
+        ];
+
+        return view('communities.show', $data);
+    }
+
+    public function community_edit($code)
+    {
+        if (auth()->user()->admin <> '1') {
+            if (auth()->user()->code <> $code) {
+                if (auth()->user()->school_admin <> '1') {
+                    return back();
+                }
+            }
+        }
+        $communities = config('ccswc.communities');
+
+        $community = Community::where('code', $code)
+            ->first();
+        $community_array = [];
+        if (!empty($community)) {
+            $community_array[$community->code]['school_name'] = $community->school_name;
+            $community_array[$community->code]['principal_name'] = $community->principal_name;
+            $community_array[$community->code]['address'] = $community->address;
+            $community_array[$community->code]['telephone_number'] = $community->telephone_number;
+            $community_array[$community->code]['fax_number'] = $community->fax_number;
+            $community_array[$community->code]['email'] = $community->email;
+            $community_array[$community->code]['branch'] = $community->branch;
+            $community_array[$community->code]['class_location'] = $community->class_location;
+            $community_array[$community->code]['website'] = $community->website;
+            $community_array[$community->code]['unit'] = $community->unit;
+            $community_array[$community->code]['introduction'] = $community->introduction;
+        } else {
+            $community_array[$code]['school_name'] = "";
+            $community_array[$code]['principal_name'] = "";
+            $community_array[$code]['address'] = "";
+            $community_array[$code]['telephone_number'] = "";
+            $community_array[$code]['fax_number'] = "";
+            $community_array[$code]['email'] = "";
+            $community_array[$code]['branch'] = "";
+            $community_array[$code]['class_location'] = "";
+            $community_array[$code]['website'] = "";
+            $community_array[$code]['unit'] = "";
+            $community_array[$code]['introduction'] = "";
+        }
+
+        $data = [
+            'code' => $code,
+            'community' => $community,
+            'communities' => $communities,
+            'community_array' => $community_array,
+        ];
+        return view('communities.edit', $data);
+    }
+
+    public function community_store(Request $request)
+    {
+        $att = $request->all();
+        $check_community = Community::where('code', $request->input('code'))
+            ->first();
+
+        if (empty($check_community)) {
+            Community::create($att);
+        } else {
+            $check_community->update($att);
+        }
+        return redirect()->route('community.show', $request->input('code'));
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title','公告系統-')
+@section('title','社區大學沿革-')
 
 @section('banner')
 <br>

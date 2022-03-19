@@ -40,6 +40,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::get('posts/view', [PostsController::class, 'posts_view'])->name('posts.view');
 Route::get('history/view', [HomeController::class, 'history_view'])->name('history.view');
+Route::get('community/view', [HomeController::class, 'community_view'])->name('community.view');
+Route::get('community/show/{code}', [HomeController::class, 'community_show'])->name('community.show');
 
 //會員可
 Route::group(['middleware' => 'auth'], function () {
@@ -96,6 +98,8 @@ Route::group(['middleware' => 'school_admin'], function () {
 Route::group(['middleware' => 'all_admin'], function () {
     Route::get('history/edit', [HomeController::class, 'history_edit'])->name('history.edit');
     Route::post('history/store', [HomeController::class, 'history_store'])->name('history.store');
+    Route::get('community/edit/{code}', [HomeController::class, 'community_edit'])->name('community.edit');
+    Route::post('community/store', [HomeController::class, 'community_store'])->name('community.store');
 });
 
 //社教科管理者可

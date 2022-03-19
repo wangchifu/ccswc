@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title','公告系統-')
+@section('title','社區大學沿革-')
 
 @section('banner')
 <br>
@@ -40,6 +40,7 @@
     });
     </script>
         <div class="mb-3">
+            <a href="{{ route('history.view') }}" class="btn btn-secondary">返回</a>
             <button id="submit_button" class="btn btn-primary" onclick="change_button1()">送出</button>
         </div>
         
