@@ -2,41 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Post;
+use App\Models\User;
+use App\Models\Content;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function create_admin()
     {
         $att = [
-        'username' => 'admin',
-        'password' => bcrypt('demo1234'),
-        'login_type' => 'local',
-        'name' => '系統管理員',
-        'current_team_id' => '1',
+            'username' => 'admin',
+            'password' => bcrypt('demo1234'),
+            'login_type' => 'local',
+            'name' => '系統管理員',
+            'current_team_id' => '1',
         ];
         User::create($att);
     }
 
     public function index()
     {
-        $posts = Post::where('situation',2)
-            ->where('category_id',1)
-            ->orderBy('updated_at','DESC')                
-            ->paginate(10);
-        
+        $posts = Post::where('situation', 2)
+            ->where('category_id', 1)
+            ->orderBy('updated_at', 'DESC')
+            ->paginate(5);
+
         $data = [
-            'posts'=>$posts,
+            'posts' => $posts,
         ];
 
-        return view('index',$data);
+        return view('index', $data);
     }
 
     public function show(Post $post)
     {
-        if($post->category_id == 2){
+        if ($post->category_id == 2) {
             return back();
         }
 
@@ -52,10 +54,11 @@ class HomeController extends Controller
         $types = config('ccswc.types');
 
         $data = [
-            'post'=>$post,
-            'types'=>$types,
+            'post' => $post,
+            'types' => $types,
         ];
-        return view('index_show',$data);
+
+        return view('index_show', $data);
     }
 
     public function pic($d = null)
@@ -96,12 +99,57 @@ class HomeController extends Controller
     public function impersonate(User $user)
     {
         Auth::user()->impersonate($user);
+
         return redirect()->route('index');
     }
 
     public function impersonate_leave()
     {
         Auth::user()->leaveImpersonation();
+
         return redirect()->route('index');
+    }
+
+    public function history_view()
+    {
+        $history = Content::where('item', 'history')->first();
+        if (empty($history->id)) {
+            $content = "";
+        } else {
+            $content = $history->content;
+        }
+        $data = [
+            'content' => $content,
+        ];
+        return view('contents.history_view', $data);
+    }
+
+    public function history_edit()
+    {
+        $history = Content::where('item', 'history')->first();
+        if (empty($history->id)) {
+            $content = "";
+        } else {
+            $content = $history->content;
+        }
+        $data = [
+            'content' => $content,
+        ];
+        return view('contents.history_edit', $data);
+    }
+
+    public function history_store(Request $request)
+    {
+        $att['item'] = "history";
+        $att['content'] = $request->input('content');
+        $att['user_id'] = auth()->user()->id;
+        $history = Content::where('item', 'history')->first();
+        if (empty($history->id)) {
+            Content::create($att);
+        } else {
+            $history->update($att);
+        }
+
+        return redirect()->route('history.view');
     }
 }

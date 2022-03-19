@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\UsersController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +38,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 */
 
+Route::get('posts/view', [PostsController::class, 'posts_view'])->name('posts.view');
+Route::get('history/view', [HomeController::class, 'history_view'])->name('history.view');
+
 //會員可
 Route::group(['middleware' => 'auth'], function () {
     //登出
@@ -54,9 +57,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('reports/{report}/school_show', [ReportsController::class, 'school_show'])->name('reports.school_show');
     Route::post('reports/{report_school}/school_sign', [ReportsController::class, 'school_sign'])->name('reports.school_sign');
     Route::get('reports/{report}/school_edit', [ReportsController::class, 'school_edit'])->name('reports.school_edit');
-    Route::post('reports/{report_school}/school_update', [ReportsController::class, 'school_update'])->name('reports.school_update');    
+    Route::post('reports/{report_school}/school_update', [ReportsController::class, 'school_update'])->name('reports.school_update');
     Route::get('reports/{report}/school_view', [ReportsController::class, 'school_view'])->name('reports.school_view');
-
 
     //結束模擬
     Route::get('sims/impersonate_leave', [HomeController::class, 'impersonate_leave'])->name('sims.impersonate_leave');
@@ -77,7 +79,6 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('users/{user}/delete', [UsersController::class, 'delete'])->name('users.delete');
     Route::get('users/{user}/able', [UsersController::class, 'able'])->name('users.able');
     Route::get('users/{user}/back_pwd', [UsersController::class, 'back_pwd'])->name('users.back_pwd');
-    
 });
 
 //社大管理者可
@@ -86,15 +87,15 @@ Route::group(['middleware' => 'school_admin'], function () {
     Route::get('users/{user}/school_edit', [UsersController::class, 'school_edit'])->name('users.school_edit');
     Route::patch('users/{user}/school_update', [UsersController::class, 'school_update'])->name('users.school_update');
     Route::get('users/{user}/school_able', [UsersController::class, 'school_able'])->name('users.school_able');
-    
+
     Route::get('reports/{report_school}/school_pass', [ReportsController::class, 'school_pass'])->name('reports.school_pass');
     Route::get('reports/{report_school}/school_back', [ReportsController::class, 'school_back'])->name('reports.school_back');
-
 });
 
 //社教科管理者 及 社大管理者可
 Route::group(['middleware' => 'all_admin'], function () {
-
+    Route::get('history/edit', [HomeController::class, 'history_edit'])->name('history.edit');
+    Route::post('history/store', [HomeController::class, 'history_store'])->name('history.store');
 });
 
 //社教科管理者可
@@ -108,12 +109,10 @@ Route::group(['middleware' => 'social_education_admin'], function () {
     Route::get('reports/{report}/back', [ReportsController::class, 'back'])->name('reports.back');
 });
 
-
 //教育處人員可
 Route::group(['middleware' => 'section'], function () {
     Route::get('apply_section', [UsersController::class, 'apply_section'])->name('users.apply_section');
 });
-
 
 //社教科人員可
 Route::group(['middleware' => 'social_education'], function () {
