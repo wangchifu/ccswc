@@ -21,7 +21,7 @@
               <li><a href="index-2.html">調查填報</a></li>
             </ul>
           </li>
-          <li><a class="nav-link scrollto" href="index.html#about">網路資源</a></li>
+          <li><a class="nav-link scrollto" href="{{ route('resource.view') }}">網路資源</a></li>
           @guest
           <li><a class="nav-link scrollto" href="{{ route('g_login') }}">GSuite登入</a></li>
           @endguest

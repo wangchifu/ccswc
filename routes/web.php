@@ -43,6 +43,7 @@ Route::get('history/view', [HomeController::class, 'history_view'])->name('histo
 Route::get('community/view', [HomeController::class, 'community_view'])->name('community.view');
 Route::get('community/show/{code}', [HomeController::class, 'community_show'])->name('community.show');
 Route::get('law/view', [HomeController::class, 'law_view'])->name('law.view');
+Route::get('resource/view', [HomeController::class, 'resource_view'])->name('resource.view');
 
 
 //會員可
@@ -88,6 +89,12 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('law/edit/{content}', [HomeController::class, 'law_edit'])->name('law.edit');
     Route::patch('law/update/{content}', [HomeController::class, 'law_update'])->name('law.update');
     Route::get('law/delete/{content}', [HomeController::class, 'law_delete'])->name('law.delete');
+
+    Route::get('resource/create', [HomeController::class, 'resource_create'])->name('resource.create');
+    Route::post('resource/store', [HomeController::class, 'resource_store'])->name('resource.store');
+    Route::get('resource/edit/{content}', [HomeController::class, 'resource_edit'])->name('resource.edit');
+    Route::patch('resource/update/{content}', [HomeController::class, 'resource_update'])->name('resource.update');
+    Route::get('resource/delete/{content}', [HomeController::class, 'resource_delete'])->name('resource.delete');
 });
 
 //社大管理者可

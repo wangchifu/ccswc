@@ -11,6 +11,7 @@ class Content extends Model
     protected $fillable = [
         'item',
         'content',
+        'resource',
         'user_id',
     ];
 

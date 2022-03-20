@@ -350,4 +350,56 @@ class HomeController extends Controller
         $content->delete();
         return redirect()->route('law.view');
     }
+
+    public function resource_view()
+    {
+        $resources = Content::where('item', 'resource')
+            ->orderBy('id', 'DESC')
+            ->paginate(10);
+        $data = [
+            'resources' => $resources,
+        ];
+        return view('contents.resource_view', $data);
+    }
+
+    public function resource_create()
+    {
+        return view('contents.resource_create');
+    }
+
+    public function resource_store(Request $request)
+    {
+        $att['content'] = $request->input('content');
+        $att['item'] = "resource";
+        $att['resource'] = $request->input('resource');
+        $att['user_id'] = auth()->user()->id;
+        $content = Content::create($att);
+
+        return redirect()->route('resource.view');
+    }
+
+    public function resource_edit(Content $content)
+    {
+        $data = [
+            'content' => $content,
+        ];
+        return view('contents.resource_edit', $data);
+    }
+
+    public function resource_update(Request $request, Content $content)
+    {
+        $att['content'] = $request->input('content');
+        $att['item'] = "resource";
+        $att['resource'] = $request->input('resource');
+        $att['user_id'] = auth()->user()->id;
+        $content->update($att);
+
+        return redirect()->route('resource.view');
+    }
+
+    public function resource_delete(Content $content)
+    {
+        $content->delete();
+        return redirect()->route('resource.view');
+    }
 }
