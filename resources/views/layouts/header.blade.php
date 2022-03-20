@@ -14,7 +14,7 @@
           <li><a class="nav-link scrollto" href="{{ route('posts.view') }}">公告訊息</a></li>
           <li><a class="nav-link scrollto" href="{{ route('history.view') }}">彰化縣社區大學沿革</a></li>
           <li><a class="nav-link scrollto" href="{{ route('community.view') }}">社大一覽表</a></li>
-          <li><a class="nav-link scrollto" href="index.html#about">法令規章</a></li>
+          <li><a class="nav-link scrollto" href="{{ route('law.view') }}">法令規章</a></li>
           <li class="dropdown"><a href="#"><span>資料填報</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>
               <li><a href="index.html" class="active">資料平台</a></li>

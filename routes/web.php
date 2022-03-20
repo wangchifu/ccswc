@@ -42,6 +42,8 @@ Route::get('posts/view', [PostsController::class, 'posts_view'])->name('posts.vi
 Route::get('history/view', [HomeController::class, 'history_view'])->name('history.view');
 Route::get('community/view', [HomeController::class, 'community_view'])->name('community.view');
 Route::get('community/show/{code}', [HomeController::class, 'community_show'])->name('community.show');
+Route::get('law/view', [HomeController::class, 'law_view'])->name('law.view');
+
 
 //會員可
 Route::group(['middleware' => 'auth'], function () {
@@ -81,6 +83,11 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('users/{user}/delete', [UsersController::class, 'delete'])->name('users.delete');
     Route::get('users/{user}/able', [UsersController::class, 'able'])->name('users.able');
     Route::get('users/{user}/back_pwd', [UsersController::class, 'back_pwd'])->name('users.back_pwd');
+    Route::get('law/create', [HomeController::class, 'law_create'])->name('law.create');
+    Route::post('law/store', [HomeController::class, 'law_store'])->name('law.store');
+    Route::get('law/edit/{content}', [HomeController::class, 'law_edit'])->name('law.edit');
+    Route::patch('law/update/{content}', [HomeController::class, 'law_update'])->name('law.update');
+    Route::get('law/delete/{content}', [HomeController::class, 'law_delete'])->name('law.delete');
 });
 
 //社大管理者可

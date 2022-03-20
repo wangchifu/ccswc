@@ -277,4 +277,77 @@ class HomeController extends Controller
         }
         return redirect()->route('community.show', $request->input('code'));
     }
+
+    public function law_view()
+    {
+        $laws = Content::where('item', 'law')
+            ->orderBy('id', 'DESC')
+            ->paginate(10);
+        $data = [
+            'laws' => $laws,
+        ];
+        return view('contents.law_view', $data);
+    }
+
+    public function law_create()
+    {
+        return view('contents.law_create');
+    }
+
+    public function law_store(Request $request)
+    {
+        $att['content'] = $request->input('content');
+        $att['item'] = "law";
+        $att['user_id'] = auth()->user()->id;
+        $content = Content::create($att);
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $info = [
+                'mime-type' => $file->getMimeType(),
+                'original_filename' => $file->getClientOriginalName(),
+                'extension' => $file->getClientOriginalExtension(),
+            ];
+            $file->storeAs('public/contents/' . $content->id, $info['original_filename']);
+        }
+
+        return redirect()->route('law.view');
+    }
+
+    public function law_edit(Content $content)
+    {
+        $data = [
+            'content' => $content,
+        ];
+        return view('contents.law_edit', $data);
+    }
+
+    public function law_update(Request $request, Content $content)
+    {
+        $att['content'] = $request->input('content');
+        $att['item'] = "law";
+        $att['user_id'] = auth()->user()->id;
+        $content->update($att);
+        if ($request->hasFile('file')) {
+            //先刪除舊的
+            deldir(storage_path('app/public/contents/' . $content->id));
+
+            $file = $request->file('file');
+            $info = [
+                'mime-type' => $file->getMimeType(),
+                'original_filename' => $file->getClientOriginalName(),
+                'extension' => $file->getClientOriginalExtension(),
+            ];
+            $file->storeAs('public/contents/' . $content->id, $info['original_filename']);
+        }
+
+        return redirect()->route('law.view');
+    }
+
+    public function law_delete(Content $content)
+    {
+        //先刪除舊的
+        deldir(storage_path('app/public/contents/' . $content->id));
+        $content->delete();
+        return redirect()->route('law.view');
+    }
 }
