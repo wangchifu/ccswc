@@ -26,7 +26,7 @@
             填報者
         </th>
         @foreach($report->questions as $question)
-        <th nowrap>
+        <th>
             {{ $question->title }}
         </th>
         @endforeach        
@@ -45,12 +45,11 @@
                 @endif
             </td>
             @foreach($report->questions as $question)
-                               
                 <td>
                     @if(isset($all_answers[$k][$question->id]))
                         @if($question->type=="checkbox")
                             @foreach(unserialize($all_answers[$k][$question->id]) as $k1=>$v1)
-                                {{ $v1 }},
+                                {{ $k1 }},
                             @endforeach
                         @else
                             {{ $all_answers[$k][$question->id] }}

@@ -15,10 +15,12 @@
           <li><a class="nav-link scrollto" href="{{ route('history.view') }}">彰化縣社區大學沿革</a></li>
           <li><a class="nav-link scrollto" href="{{ route('community.view') }}">社大一覽表</a></li>
           <li><a class="nav-link scrollto" href="{{ route('law.view') }}">法令規章</a></li>
-          <li class="dropdown"><a href="#"><span>資料填報</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+          <li class="dropdown"><a href="#"><span>資料平台</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>
-              <li><a href="index.html" class="active">資料平台</a></li>
-              <li><a href="index-2.html">調查填報</a></li>
+              <li><a href="index.html">課程表</a></li>
+              <li><a href="index-2.html">行政人員名冊</a></li>
+              <li><a href="index-2.html">教師名冊</a></li>
+              <li><a href="index-2.html">學員統計資料</a></li>
             </ul>
           </li>
           <li><a class="nav-link scrollto" href="{{ route('resource.view') }}">網路資源</a></li>
