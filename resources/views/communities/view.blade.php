@@ -63,7 +63,7 @@
             <td>
                 <a href="{{ route('community.show',$k) }}" class="btn btn-info btn-sm">詳細資料</a>
                 @auth
-                    @if(auth()->user()->admin == '1' or (auth()->user()->school_admin == '1' and auth()->user()->code==$k))
+                    @if(auth()->user()->social_education > 0 or (auth()->user()->school_admin == '1' and auth()->user()->code==$k))
                         <a href="{{ route('community.edit',$k) }}" class="btn btn-primary btn-sm">編輯</a>
                     @endif
                 @endauth

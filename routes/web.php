@@ -84,17 +84,6 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('users/{user}/delete', [UsersController::class, 'delete'])->name('users.delete');
     Route::get('users/{user}/able', [UsersController::class, 'able'])->name('users.able');
     Route::get('users/{user}/back_pwd', [UsersController::class, 'back_pwd'])->name('users.back_pwd');
-    Route::get('law/create', [HomeController::class, 'law_create'])->name('law.create');
-    Route::post('law/store', [HomeController::class, 'law_store'])->name('law.store');
-    Route::get('law/edit/{content}', [HomeController::class, 'law_edit'])->name('law.edit');
-    Route::patch('law/update/{content}', [HomeController::class, 'law_update'])->name('law.update');
-    Route::get('law/delete/{content}', [HomeController::class, 'law_delete'])->name('law.delete');
-
-    Route::get('resource/create', [HomeController::class, 'resource_create'])->name('resource.create');
-    Route::post('resource/store', [HomeController::class, 'resource_store'])->name('resource.store');
-    Route::get('resource/edit/{content}', [HomeController::class, 'resource_edit'])->name('resource.edit');
-    Route::patch('resource/update/{content}', [HomeController::class, 'resource_update'])->name('resource.update');
-    Route::get('resource/delete/{content}', [HomeController::class, 'resource_delete'])->name('resource.delete');
 });
 
 //社大管理者可
@@ -110,10 +99,6 @@ Route::group(['middleware' => 'school_admin'], function () {
 
 //社教科管理者 及 社大管理者可
 Route::group(['middleware' => 'all_admin'], function () {
-    Route::get('history/edit', [HomeController::class, 'history_edit'])->name('history.edit');
-    Route::post('history/store', [HomeController::class, 'history_store'])->name('history.store');
-    Route::get('community/edit/{code}', [HomeController::class, 'community_edit'])->name('community.edit');
-    Route::post('community/store', [HomeController::class, 'community_store'])->name('community.store');
 });
 
 //社教科管理者可
@@ -155,4 +140,24 @@ Route::group(['middleware' => 'social_education'], function () {
     Route::get('reports/{report}/delete', [ReportsController::class, 'delete'])->name('reports.delete');
     Route::get('reports/{report}/trash', [ReportsController::class, 'trash'])->name('reports.trash');
     Route::get('reports/{report}/excel', [ReportsController::class, 'excel'])->name('reports.excel');
+
+    Route::get('law/create', [HomeController::class, 'law_create'])->name('law.create');
+    Route::post('law/store', [HomeController::class, 'law_store'])->name('law.store');
+    Route::get('law/edit/{content}', [HomeController::class, 'law_edit'])->name('law.edit');
+    Route::patch('law/update/{content}', [HomeController::class, 'law_update'])->name('law.update');
+    Route::get('law/delete/{content}', [HomeController::class, 'law_delete'])->name('law.delete');
+
+    Route::get('resource/create', [HomeController::class, 'resource_create'])->name('resource.create');
+    Route::post('resource/store', [HomeController::class, 'resource_store'])->name('resource.store');
+    Route::get('resource/edit/{content}', [HomeController::class, 'resource_edit'])->name('resource.edit');
+    Route::patch('resource/update/{content}', [HomeController::class, 'resource_update'])->name('resource.update');
+    Route::get('resource/delete/{content}', [HomeController::class, 'resource_delete'])->name('resource.delete');
+});
+
+//社教科人員及社大的管理
+Route::group(['middleware' => 'social_education_school_admin'], function () {
+    Route::get('history/edit', [HomeController::class, 'history_edit'])->name('history.edit');
+    Route::post('history/store', [HomeController::class, 'history_store'])->name('history.store');
+    Route::get('community/edit/{code}', [HomeController::class, 'community_edit'])->name('community.edit');
+    Route::post('community/store', [HomeController::class, 'community_store'])->name('community.store');
 });

@@ -11,6 +11,11 @@
 
 @section('content')
 <h1>公告訊息</h1>
+@auth
+    @if(auth()->user()->social_education > 0)
+        <a href="{{ route('posts.create') }}" class="btn btn-success btn-sm">新增</a>
+    @endif
+@endauth
     <table class="table table-striped">
       <thead class="table-light">
       <tr>

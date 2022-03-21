@@ -14,7 +14,7 @@
     網路資源
 </h1>
 @auth
-    @if(auth()->user()->admin == '1')
+    @if(auth()->user()->social_education > 0)
         <a href="{{ route('resource.create') }}" class="btn btn-success btn-sm">新增</a>
     @endif
 @endauth
@@ -34,7 +34,7 @@
             刊登日期
         </th>
         @auth
-        @if(auth()->user()->admin == '1')
+        @if(auth()->user()->social_education > 0)
         <th nowrap>
             動作
         </th>
@@ -61,7 +61,7 @@
                     {{ $resource->updated_at }}
                 </td>
                 @auth
-                    @if(auth()->user()->admin == '1')
+                    @if(auth()->user()->social_education > 0)
                         <td>
                             <a href="{{ route('resource.edit',$resource->id) }}" class="btn btn-primary btn-sm">編輯</a>
                             <a href="{{ route('resource.delete',$resource->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('確定刪除？')">刪除</a>

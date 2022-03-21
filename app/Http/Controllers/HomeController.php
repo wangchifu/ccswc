@@ -217,7 +217,7 @@ class HomeController extends Controller
 
     public function community_edit($code)
     {
-        if (auth()->user()->admin <> '1') {
+        if (auth()->user()->social_education <> 1 and auth()->user()->social_education <> 2) {
             if (auth()->user()->code <> $code) {
                 if (auth()->user()->school_admin <> '1') {
                     return back();

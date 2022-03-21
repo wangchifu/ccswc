@@ -14,7 +14,7 @@
     法令規章
 </h1>
 @auth
-    @if(auth()->user()->admin == '1')
+    @if(auth()->user()->social_education > 0)
         <a href="{{ route('law.create') }}" class="btn btn-success btn-sm">新增</a>
     @endif
 @endauth
@@ -34,7 +34,7 @@
             刊登日期
         </th>
         @auth
-        @if(auth()->user()->admin == '1')
+        @if(auth()->user()->social_education > 0)
         <th nowrap>
             動作
         </th>
@@ -65,7 +65,7 @@
                     {{ $law->updated_at }}
                 </td>
                 @auth
-                    @if(auth()->user()->admin == '1')
+                    @if(auth()->user()->social_education > 0)
                         <td>
                             <a href="{{ route('law.edit',$law->id) }}" class="btn btn-primary btn-sm">編輯</a>
                             <a href="{{ route('law.delete',$law->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('確定刪除？')">刪除</a>

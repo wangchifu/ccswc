@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'school_admin' => \App\Http\Middleware\SchoolAdminMiddleware::class,
         'section' => \App\Http\Middleware\SectionMiddleware::class,
         'social_education' => \App\Http\Middleware\SocialEducationMiddleware::class,
+        'social_education_school_admin' => \App\Http\Middleware\SocialEducationSchoolAdminMiddleware::class,
         'social_education_admin' => \App\Http\Middleware\SocialEducationAdminMiddleware::class,
     ];
 }
