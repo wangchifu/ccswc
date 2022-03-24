@@ -46,6 +46,8 @@ Route::get('community/show/{code}', [HomeController::class, 'community_show'])->
 Route::get('law/view', [HomeController::class, 'law_view'])->name('law.view');
 Route::get('resource/view', [HomeController::class, 'resource_view'])->name('resource.view');
 
+Route::get('courses/index/{code?}', [DataController::class, 'course_index'])->name('courses.index');
+
 
 //會員可
 Route::group(['middleware' => 'auth'], function () {
@@ -66,7 +68,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('reports/{report_school}/school_update', [ReportsController::class, 'school_update'])->name('reports.school_update');
     Route::get('reports/{report}/school_view', [ReportsController::class, 'school_view'])->name('reports.school_view');
 
-    Route::get('courses/index', [DataController::class, 'course_index'])->name('courses.index');
     Route::get('courses/create', [DataController::class, 'course_create'])->name('courses.create');
     Route::post('courses/store', [DataController::class, 'course_store'])->name('courses.store');
 
