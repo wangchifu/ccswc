@@ -10,22 +10,48 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-
-          <li><a class="nav-link scrollto" href="{{ route('posts.view') }}">公告訊息</a></li>
+          @auth
+          <li class="dropdown"><a href="#"><span>公告訊息</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>              
+              <li><a href="{{ route('posts.view') }}">一般公告</a></li>                  
+              <li><a href="{{ route('posts.school_index') }}">公告簽收</a></li>                  
+            </ul>
+          </li>
+          @endauth
+          @guest
+            <li><a class="nav-link scrollto" href="{{ route('posts.view') }}">公告訊息</a></li>
+          @endguest        
           <li><a class="nav-link scrollto" href="{{ route('history.view') }}">彰化縣社區大學沿革</a></li>
           <li><a class="nav-link scrollto" href="{{ route('community.view') }}">社大一覽表</a></li>
           <li><a class="nav-link scrollto" href="{{ route('law.view') }}">法令規章</a></li>
+          @auth
+            <li class="dropdown"><a href="#"><span>資料填報</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+              <ul>
+                <li class="dropdown"><a href="#"><span>資料平台</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                  <ul>
+                    <li><a href="{{ route('courses.index') }}">課程表</a></li>
+                    <li><a href="index-2.html">行政人員名冊</a></li>
+                    <li><a href="index-2.html">教師名冊</a></li>
+                    <li><a href="index-2.html">學員統計資料</a></li>
+                  </ul>
+                </li>
+                <li><a href="{{ route('reports.school_index') }}">調查填報</a></li>                  
+              </ul>
+            </li>
+          @endauth
+          @guest
           <li class="dropdown"><a href="#"><span>資料平台</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>
-              <li><a href="index.html">課程表</a></li>
+              <li><a href="{{ route('courses.index') }}">課程表</a></li>
               <li><a href="index-2.html">行政人員名冊</a></li>
               <li><a href="index-2.html">教師名冊</a></li>
               <li><a href="index-2.html">學員統計資料</a></li>
             </ul>
           </li>
+          @endguest
           <li><a class="nav-link scrollto" href="{{ route('resource.view') }}">網路資源</a></li>
           @guest
-          <li><a class="nav-link scrollto" href="{{ route('g_login') }}">GSuite登入</a></li>
+          <li><a class="nav-link scrollto" href="{{ route('login') }}">GSuite登入</a></li>
           @endguest
           @auth
           <li class="dropdown"><a href="#"><span><i class="fas fa-user"></i> {{ auth()->user()->name }}</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
@@ -39,11 +65,13 @@
               @if(auth()->user()->social_education > 0)
                 <li><a class="nav-link scrollto" href="{{ route('posts.index') }}">公告系統</a></li>
                 <li><a class="nav-link scrollto" href="{{ route('reports.index') }}">填報系統</a></li>
-              @endif   
+              @endif
+              <!--   
               @if(auth()->user()->code <> "079999")
                 <li><a class="nav-link scrollto" href="{{ route('posts.school_index') }}">公告簽收</a></li>
                 <li><a class="nav-link scrollto" href="{{ route('reports.school_index') }}">調查填報</a></li>
               @endif
+              -->
               @if(auth()->user()->login_type=="local")
                 <li><a class="nav-link scrollto" href="{{ route('users.reset_pwd') }}">更改密碼</a></li>
               @endif

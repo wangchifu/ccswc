@@ -13,6 +13,8 @@
 <h1>
     法令規章
 </h1>
+<br>
+<br>
 @auth
     @if(auth()->user()->social_education > 0)
         <a href="{{ route('law.create') }}" class="btn btn-success btn-sm">新增</a>

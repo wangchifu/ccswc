@@ -65,10 +65,10 @@
         <input type="text" class="form-control rq" id="title" name="title" required onclick="change_button2()">
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3 w-25">
       <label for="die_date" class="form-label"><span class="text-danger">*</span>截止日期</label>
       <input type="date" class="form-control rq" id="die_date" name="die_date" required onclick="change_button2()">
-  </div>
+    </div>
 
     <div class="mb-3">
       <label for="content" class="form-label"><span class="text-danger">*</span>填報說明</label>

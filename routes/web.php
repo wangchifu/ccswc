@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\DataController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +25,7 @@ Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('show/{post}', [HomeController::class, 'show'])->name('show');
 
 //gsuite登入
-Route::get('g_login', [LoginController::class, 'g_login'])->name('g_login');
+Route::get('mlogin', [LoginController::class, 'mlogin'])->name('mlogin');
 Route::get('login', [LoginController::class, 'login'])->name('login');
 
 Route::post('auth', [LoginController::class, 'auth'])->name('auth');
@@ -64,6 +65,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('reports/{report}/school_edit', [ReportsController::class, 'school_edit'])->name('reports.school_edit');
     Route::post('reports/{report_school}/school_update', [ReportsController::class, 'school_update'])->name('reports.school_update');
     Route::get('reports/{report}/school_view', [ReportsController::class, 'school_view'])->name('reports.school_view');
+
+    Route::get('courses/index', [DataController::class, 'course_index'])->name('courses.index');
+    Route::get('courses/create', [DataController::class, 'course_create'])->name('courses.create');
+    Route::post('courses/store', [DataController::class, 'course_store'])->name('courses.store');
 
     //結束模擬
     Route::get('sims/impersonate_leave', [HomeController::class, 'impersonate_leave'])->name('sims.impersonate_leave');

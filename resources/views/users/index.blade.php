@@ -53,7 +53,9 @@
                 @if($user->code == "079999")
                     教育處人員
                 @else
+                    @if(isset($communities[$user->code]))
                     {{ $communities[$user->code] }}
+                    @endif
                 @endif
             </td>
             <td>

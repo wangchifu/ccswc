@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function g_login()
+    public function mlogin()
     {
-        return view('auth.g_login');
+        return view('auth.mlogin');
     }
 
     public function login()
@@ -29,18 +29,27 @@ class LoginController extends Controller
             //檢驗gsuite帳密
             $data = ['email' => $request->input('username'), 'password' => $request->input('password')];
             $data_string = json_encode($data);
-            $ch = curl_init('https://school.chc.edu.tw/api/auth');
+            $ch = curl_init('https://school.chc.edu.tw/api/auth');                                            
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data_string),
+                'AUTHKEY: 0b2ee21e-9b32-11ec-b909-0242ac120002')
+                );
+            /*
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                     'Content-Type: application/json',
                     'Content-Length: '.strlen($data_string), ]
             );
+            */
             $result = curl_exec($ch);
             $obj = json_decode($result, true);
+
+            //dd($obj);
 
             if ($obj['success']) {
                 //非教職員，即跳開
