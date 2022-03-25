@@ -21,6 +21,7 @@ class DataController extends Controller
                 ->paginate(20);
         }
         $communities = config('ccswc.communities');
+        $codes = config('ccswc.codes');
 
         $class_situations = [
             0 => '無資料',
@@ -36,6 +37,7 @@ class DataController extends Controller
         $data = [
             'code' => $code,
             'communities' => $communities,
+            'codes'=>$codes,
             'seasons' => $seasons,
             'class_situations' => $class_situations,
             'courses' => $courses,
@@ -90,4 +92,59 @@ class DataController extends Controller
 
         return redirect()->route('courses.index');
     }
+
+    public function course_create_one(CourseSeason $course_season)
+    {
+        $communities = config('ccswc.communities');
+        $data = [
+            'communities' => $communities,
+            'course_season'=>$course_season,
+        ];
+        return view('courses.create_one', $data);
+    }
+
+    public function course_store_one(Request $request)
+    {       
+        $att = $request->all();
+        $att['code'] = auth()->user()->code;
+        $att['user_id'] = auth()->user()->id;
+
+        Course::create($att);
+
+        return redirect()->route('courses.index');
+    }
+
+    public function course_edit_one(Course $course)
+    {
+        if($course->code != auth()->user()->code){
+            return back();
+        }
+        $communities = config('ccswc.communities');
+        $data = [
+            'communities' => $communities,
+            'course'=>$course,
+        ];
+        return view('courses.edit_one', $data);
+    }
+
+    public function course_update_one(Request $request,Course $course)
+    {       
+        
+        
+        $att = $request->all();
+
+        $course->update($att);
+
+        return redirect()->route('courses.index');
+    }
+
+    public function course_delete_one(Course $course)
+    {
+        if($course->user_id == auth()->user()->id){
+            $course->delete();
+        }
+        return redirect()->route('courses.index');
+    }
+
+
 }

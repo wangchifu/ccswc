@@ -29,7 +29,7 @@
         @auth
             @if(auth()->user()->code <> "079999")
             <div class="col-3">
-                <a href="{{ route('courses.create') }}" class="btn btn-success btn-sm">新增</a>
+                <a href="{{ route('courses.create') }}" class="btn btn-success btn-sm">批次新增</a>
             </div>
             @endif
         @endauth
@@ -59,11 +59,11 @@
             開課狀態
         </th>
         @auth
-        @if(auth()->user()->social_education > 0)
-            <th nowrap>
-                動作
-            </th>
-        @endif
+            @if(in_array(auth()->user()->code,$codes))
+                <th nowrap>
+                    動作
+                </th>
+            @endif
         @endauth
     </tr>
     </thead>
@@ -72,7 +72,12 @@
             <tr>
                 <td>
                     {{ $communities[$course->code] }}<br>
-                    {{ $course->course_season->year }} {{ $seasons[$course->course_season->season] }}
+                    <?php 
+                        $badge = ($course->course_season->season==1)?"primary":"warning text-dark";
+                    ?>
+                    <span class="badge rounded-pill bg-{{ $badge }}">
+                        {{ $course->course_season->year }} {{ $seasons[$course->course_season->season] }}
+                    </span>                            
                 </td>
                 <td>
                     {{ $course->type }}<br>
@@ -88,7 +93,20 @@
                 </td>
                 <td>
                     {{ $course->students }}<br>
+                    @if(isset($class_situations[$course->situation]))
                     {{ $class_situations[$course->situation] }}
+                    @endif
+                </td>
+                <td>
+                    @auth
+                        @if(in_array(auth()->user()->code,$codes))
+                            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                <a href="{{ route('courses.create_one',$course->course_season_id) }}" class="btn btn-outline-success btn-sm">增</a>
+                                <a href="{{ route('courses.edit_one',$course->id) }}" class="btn btn-outline-primary btn-sm">編</a>
+                                <a href="{{ route('courses.delete_one',$course->id) }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('確定刪除？')">刪</a>
+                            </div>
+                        @endif
+                    @endauth
                 </td>
             </tr>
         @endforeach

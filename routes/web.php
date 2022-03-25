@@ -70,6 +70,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('courses/create', [DataController::class, 'course_create'])->name('courses.create');
     Route::post('courses/store', [DataController::class, 'course_store'])->name('courses.store');
+    Route::get('courses/create_one/{course_season}', [DataController::class, 'course_create_one'])->name('courses.create_one');
+    Route::post('courses/store_one', [DataController::class, 'course_store_one'])->name('courses.store_one');
+    Route::get('courses/edit_one/{course}', [DataController::class, 'course_edit_one'])->name('courses.edit_one');
+    Route::patch('courses/update_one', [DataController::class, 'course_update_one'])->name('courses.update_one');
+    Route::get('courses/delete_one/{course}', [DataController::class, 'course_delete_one'])->name('courses.delete_one');
 
     //結束模擬
     Route::get('sims/impersonate_leave', [HomeController::class, 'impersonate_leave'])->name('sims.impersonate_leave');

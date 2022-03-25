@@ -22,8 +22,8 @@ return new class() extends Migration
             $table->string('hour');//學分數
             $table->string('teacher');
             $table->string('time');
-            $table->unsignedInteger('students')->nullable();//學生總數
-            $table->unsignedInteger('situation')->nullable();//1開班  2未開班
+            $table->string('students')->nullable();//學生總數
+            $table->string('situation')->nullable();//1開班  2未開班
             $table->string('code');       
             $table->unsignedInteger('user_id');
             $table->timestamps();
