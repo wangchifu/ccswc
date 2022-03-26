@@ -29,17 +29,21 @@ class LoginController extends Controller
             //檢驗gsuite帳密
             $data = ['email' => $request->input('username'), 'password' => $request->input('password')];
             $data_string = json_encode($data);
-            $ch = curl_init('https://school.chc.edu.tw/api/auth');                                            
+            $ch = curl_init(env('AUTH_URL'));
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($data_string),
-                'AUTHKEY: 0b2ee21e-9b32-11ec-b909-0242ac120002')
-                );
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                array(
+                    'Content-Type: application/json',
+                    'Content-Length: ' . strlen($data_string),
+                    'AUTHKEY: ' . env('AUTH_KEY')
+                )
+            );
             /*
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                     'Content-Type: application/json',
@@ -74,10 +78,13 @@ class LoginController extends Controller
                     $att['kind'] = $obj['kind'];
                     $att['title'] = $obj['title'];
                     $att['login_type'] = 'gsuite';
-                    if ($obj['code'] == '079998' or $obj['code'] == '079999' or $obj['code'] == '074628') {
+
+                    $codes = config('ccswc.codes');
+
+                    if ($obj['code'] == '079998' or in_array($obj['code'], $codes)) {
                         $user = User::create($att);
                     } else {
-                        return back()->withErrors(['error' => '只有縣府人員可登入']);
+                        return back()->withErrors(['error' => '只有縣府及社大人員可登入']);
                     }
                 } else {
                     //非教職員，即跳開
