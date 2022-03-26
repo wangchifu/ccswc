@@ -9,6 +9,7 @@ use App\Models\Staff;
 use App\Models\StaffSeason;
 use App\Models\Teacher;
 use App\Models\TeacherSeason;
+use App\Models\Student;
 use Rap2hpoutre\FastExcel\FastExcel;
 
 
@@ -405,5 +406,81 @@ class DataController extends Controller
             $teacher->delete();
         }
         return redirect()->route('teachers.index');
+    }
+
+    public function student_index()
+    {
+        $students = Student::orderBy('year', 'DESC')
+            ->orderBy('code')
+            ->paginate(7);
+        $communities = config('ccswc.communities');
+        $codes = config('ccswc.codes');
+
+        $seasons = [
+            '1' => '春季班',
+            '2' => '秋季班',
+        ];
+
+        $data = [
+            'communities' => $communities,
+            'codes' => $codes,
+            'seasons' => $seasons,
+            'students' => $students,
+        ];
+        return view('students.index', $data);
+    }
+
+    public function student_create()
+    {
+        $communities = config('ccswc.communities');
+        $data = [
+            'communities' => $communities,
+        ];
+        return view('students.create', $data);
+    }
+
+    public function student_store(Request $request)
+    {
+        $att = $request->all();
+        $att['code'] = auth()->user()->code;
+        $att['user_id'] = auth()->user()->id;
+
+        Student::create($att);
+
+        return redirect()->route('students.index');
+    }
+
+    public function student_edit(Student $student)
+    {
+        if ($student->code != auth()->user()->code) {
+            return back();
+        }
+        $communities = config('ccswc.communities');
+        $data = [
+            'communities' => $communities,
+            'student' => $student,
+        ];
+        return view('students.edit', $data);
+    }
+
+    public function student_update(Request $request, Student $student)
+    {
+        if ($student->code != auth()->user()->code) {
+            return back();
+        }
+
+        $att = $request->all();
+
+        $student->update($att);
+
+        return redirect()->route('students.index');
+    }
+
+    public function student_delete(Student $student)
+    {
+        if ($student->user_id == auth()->user()->id) {
+            $student->delete();
+        }
+        return redirect()->route('students.index');
     }
 }

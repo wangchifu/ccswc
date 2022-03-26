@@ -49,6 +49,7 @@ Route::get('resource/view', [HomeController::class, 'resource_view'])->name('res
 Route::get('courses/index/{code?}', [DataController::class, 'course_index'])->name('courses.index');
 Route::get('staffs/index/{code?}', [DataController::class, 'staff_index'])->name('staffs.index');
 Route::get('teachers/index/{code?}', [DataController::class, 'teacher_index'])->name('teachers.index');
+Route::get('students/index', [DataController::class, 'student_index'])->name('students.index');
 
 
 //會員可
@@ -94,6 +95,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('teachers/update_one/{teacher}', [DataController::class, 'teacher_update_one'])->name('teachers.update_one');
     Route::get('teachers/delete_one/{teacher}', [DataController::class, 'teacher_delete_one'])->name('teachers.delete_one');
 
+    Route::get('students/create', [DataController::class, 'student_create'])->name('students.create');
+    Route::post('students/store', [DataController::class, 'student_store'])->name('students.store');
+    Route::get('students/edit/{student}', [DataController::class, 'student_edit'])->name('students.edit');
+    Route::patch('students/update/{student}', [DataController::class, 'student_update'])->name('students.update');
+    Route::get('students/delete/{student}', [DataController::class, 'student_delete'])->name('students.delete');
 
     //結束模擬
     Route::get('sims/impersonate_leave', [HomeController::class, 'impersonate_leave'])->name('sims.impersonate_leave');

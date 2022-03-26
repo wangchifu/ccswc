@@ -32,7 +32,7 @@
                     <li><a href="{{ route('courses.index') }}">課程表</a></li>
                     <li><a href="{{ route('staffs.index') }}">行政人員名冊</a></li>
                     <li><a href="{{ route('teachers.index') }}">教師名冊</a></li>
-                    <li><a href="index-2.html">學員統計資料</a></li>
+                    <li><a href="{{ route('students.index') }}">學員統計資料</a></li>
                   </ul>
                 </li>
                 <li><a href="{{ route('reports.school_index') }}">調查填報</a></li>                  
@@ -45,7 +45,7 @@
               <li><a href="{{ route('courses.index') }}">課程表</a></li>
               <li><a href="{{ route('staffs.index') }}">行政人員名冊</a></li>
               <li><a href="{{ route('teachers.index') }}">教師名冊</a></li>
-              <li><a href="index-2.html">學員統計資料</a></li>
+              <li><a href="{{ route('students.index') }}">學員統計資料</a></li>
             </ul>
           </li>
           @endguest
