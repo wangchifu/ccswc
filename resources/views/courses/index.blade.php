@@ -77,7 +77,10 @@
                     ?>
                     <span class="badge rounded-pill bg-{{ $badge }}">
                         {{ $course->course_season->year }} {{ $seasons[$course->course_season->season] }}
-                    </span>                            
+                    </span>  
+                    <small>
+                        {{ $course->course_season->start_date }}   
+                    </small>   
                 </td>
                 <td>
                     {{ $course->type }}<br>
@@ -91,11 +94,32 @@
                     {{ $course->time }}<br>
                     {{ $course->hour }}
                 </td>
+                <?php
+                    $start_date = $course->course_season->start_date;
+                    $y = substr($start_date,0,4);
+                    $m = substr($start_date,5,2);
+                    $d = substr($start_date,8,2);
+                    $open_date = Illuminate\Support\Carbon::create($y, $m, $d,0)->addMonth();
+                    $now_date = Illuminate\Support\Carbon::now();
+                    $open =($now_date->gt($open_date))?true:false;
+                ?>
                 <td>
-                    {{ $course->students }}<br>
-                    @if(isset($class_situations[$course->situation]))
-                    {{ $class_situations[$course->situation] }}
-                    @endif
+                    @auth
+                        {{ $course->students }}<br>
+                        @if(isset($class_situations[$course->situation]))
+                        {{ $class_situations[$course->situation] }}
+                        @endif
+                    @endauth
+                    @guest
+                        @if($open)
+                            {{ $course->students }}<br>
+                            @if(isset($class_situations[$course->situation]))
+                            {{ $class_situations[$course->situation] }}
+                            @endif
+                        @else
+                            報名中
+                        @endif
+                    @endguest
                 </td>
                 <td>
                     @auth

@@ -30,8 +30,8 @@
                 <li class="dropdown"><a href="#"><span>資料平台</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
                   <ul>
                     <li><a href="{{ route('courses.index') }}">課程表</a></li>
-                    <li><a href="index-2.html">行政人員名冊</a></li>
-                    <li><a href="index-2.html">教師名冊</a></li>
+                    <li><a href="{{ route('staffs.index') }}">行政人員名冊</a></li>
+                    <li><a href="{{ route('teachers.index') }}">教師名冊</a></li>
                     <li><a href="index-2.html">學員統計資料</a></li>
                   </ul>
                 </li>
@@ -43,8 +43,8 @@
           <li class="dropdown"><a href="#"><span>資料平台</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>
               <li><a href="{{ route('courses.index') }}">課程表</a></li>
-              <li><a href="index-2.html">行政人員名冊</a></li>
-              <li><a href="index-2.html">教師名冊</a></li>
+              <li><a href="{{ route('staffs.index') }}">行政人員名冊</a></li>
+              <li><a href="{{ route('teachers.index') }}">教師名冊</a></li>
               <li><a href="index-2.html">學員統計資料</a></li>
             </ul>
           </li>

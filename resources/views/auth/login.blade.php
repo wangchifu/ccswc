@@ -21,16 +21,16 @@
                 <form action="{{ route('auth') }}" method="post" id="this_form">
                     @csrf
                     <div class="input-group mb-3">
-                        <span class="text-danger">*</span><span class="input-group-text">帳號</span>
+                        <span class="input-group-text">帳號</span>
                         <input type="text" class="form-control rq" name="username" autofocus required onclick="change_button2()">
                         <span class="input-group-text">@chc.edu.tw</span>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="text-danger">*</span><span class="input-group-text">密碼</span>
+                        <span class="input-group-text">密碼</span>
                         <input type="password" class="form-control rq" name="password" required onclick="change_button2()">
                     </div>
                     <div class="input-group mb-3">
-                        <span class="text-danger">*</span><span class="input-group-text" id="basic-addon3">驗證碼</span>
+                        <span class="input-group-text" id="basic-addon3">驗證碼</span>
                         <input type="text" class="form-control rq" name="chaptcha" required onclick="change_button2()">
                     </div>
                     <div class="input-group mb-3">

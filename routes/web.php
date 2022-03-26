@@ -47,6 +47,8 @@ Route::get('law/view', [HomeController::class, 'law_view'])->name('law.view');
 Route::get('resource/view', [HomeController::class, 'resource_view'])->name('resource.view');
 
 Route::get('courses/index/{code?}', [DataController::class, 'course_index'])->name('courses.index');
+Route::get('staffs/index/{code?}', [DataController::class, 'staff_index'])->name('staffs.index');
+Route::get('teachers/index/{code?}', [DataController::class, 'teacher_index'])->name('teachers.index');
 
 
 //會員可
@@ -73,8 +75,25 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('courses/create_one/{course_season}', [DataController::class, 'course_create_one'])->name('courses.create_one');
     Route::post('courses/store_one', [DataController::class, 'course_store_one'])->name('courses.store_one');
     Route::get('courses/edit_one/{course}', [DataController::class, 'course_edit_one'])->name('courses.edit_one');
-    Route::patch('courses/update_one', [DataController::class, 'course_update_one'])->name('courses.update_one');
+    Route::patch('courses/update_one/{course}', [DataController::class, 'course_update_one'])->name('courses.update_one');
     Route::get('courses/delete_one/{course}', [DataController::class, 'course_delete_one'])->name('courses.delete_one');
+
+    Route::get('staffs/create', [DataController::class, 'staff_create'])->name('staffs.create');
+    Route::post('staffs/store', [DataController::class, 'staff_store'])->name('staffs.store');
+    Route::get('staffs/create_one/{staff_season}', [DataController::class, 'staff_create_one'])->name('staffs.create_one');
+    Route::post('staffs/store_one', [DataController::class, 'staff_store_one'])->name('staffs.store_one');
+    Route::get('staffs/edit_one/{staff}', [DataController::class, 'staff_edit_one'])->name('staffs.edit_one');
+    Route::patch('staffs/update_one/{staff}', [DataController::class, 'staff_update_one'])->name('staffs.update_one');
+    Route::get('staffs/delete_one/{staff}', [DataController::class, 'staff_delete_one'])->name('staffs.delete_one');
+
+    Route::get('teachers/create', [DataController::class, 'teacher_create'])->name('teachers.create');
+    Route::post('teachers/store', [DataController::class, 'teacher_store'])->name('teachers.store');
+    Route::get('teachers/create_one/{teacher_season}', [DataController::class, 'teacher_create_one'])->name('teachers.create_one');
+    Route::post('teachers/store_one', [DataController::class, 'teacher_store_one'])->name('teachers.store_one');
+    Route::get('teachers/edit_one/{teacher}', [DataController::class, 'teacher_edit_one'])->name('teachers.edit_one');
+    Route::patch('teachers/update_one/{teacher}', [DataController::class, 'teacher_update_one'])->name('teachers.update_one');
+    Route::get('teachers/delete_one/{teacher}', [DataController::class, 'teacher_delete_one'])->name('teachers.delete_one');
+
 
     //結束模擬
     Route::get('sims/impersonate_leave', [HomeController::class, 'impersonate_leave'])->name('sims.impersonate_leave');
