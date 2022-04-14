@@ -4,47 +4,38 @@
       <div class="container">
         <div class="row">
 
-          <div class="col-lg-3 col-md-6">
+          <div class="col-lg-4 col-md-6">
             <div class="footer-info">
-              <h3>HeroBiz</h3>
+              <h3>彰化縣社區大學聯合服務網</h3>
               <p>
-                A108 Adam Street <br>
-                NY 535022, USA<br><br>
-                <strong>Phone:</strong> +1 5589 55488 55<br>
-                <strong>Email:</strong> info@example.com<br>
+                彰化縣政府教育處社教科 <br>
+                500201 彰化市中山路二段416號<br><br>
+                <strong>Phone:</strong> (04)7531844<br>
+                <strong>Email:</strong> top2020@email.chcg.gov.tw<br>
               </p>
             </div>
           </div>
 
-          <div class="col-lg-2 col-md-6 footer-links">
-            <h4>Useful Links</h4>
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>官方連結</h4>
             <ul>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Privacy policy</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="https://www.chcg.gov.tw/" target="_blank">彰化縣政府</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="https://www.newboe.chc.edu.tw" target="_blank">彰化縣政府教育處</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="https://www.newboe.chc.edu.tw/introduction/organization/show/D" target="_blank">彰化縣政府教育處社教科</a></li>
             </ul>
           </div>
 
-          <div class="col-lg-3 col-md-6 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Graphic Design</a></li>
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>相關連結</h4>
+            <ul>                        
+              <li><i class="bi bi-chevron-right"></i> <a href="https://rulin.org.tw/" target="_blank">二林社大</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="http://www.rstcc.tw/" target="_blank">二社田社大</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="http://www.ylcu.org.tw/" target="_blank">員永村社大</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="https://chcu.org.tw/" target="_blank">彰化社區大學</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="http://www.xn--0iss4a187be5j.tw/Default.aspx" target="_blank">湖埔社大</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="https://hsscu.dyu.edu.tw/" target="_blank">美港西社大</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="http://ls.ccu.org.tw/" target="_blank">鹿秀社大</a></li>
             </ul>
-          </div>
-
-          <div class="col-lg-4 col-md-6 footer-newsletter">
-            <h4>Our Newsletter</h4>
-            <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
-            <form action="" method="post">
-              <input type="email" name="email"><input type="submit" value="Subscribe">
-            </form>
-
           </div>
 
         </div>
@@ -68,7 +59,7 @@
             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
           </div>
         </div>
-
+        <!--
         <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
           <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
           <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -76,6 +67,7 @@
           <a href="#" class="google-plus"><i class="bi bi-skype"></i></a>
           <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
         </div>
+      -->
 
       </div>
     </div>
