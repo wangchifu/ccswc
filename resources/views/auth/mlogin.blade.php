@@ -11,7 +11,7 @@
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-4">
+    <div class="col-lg-4 col-sm-12">
         <div class="card">
             <h4 class="card-header">本機登入</h5>
             <div class="card-body">

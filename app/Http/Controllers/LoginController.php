@@ -81,7 +81,7 @@ class LoginController extends Controller
 
                     $codes = config('ccswc.codes');
 
-                    if ($obj['code'] == '079998' or in_array($obj['code'], $codes)) {
+                    if ($obj['code'] == '079998' or $obj['code'] == '079999' or in_array($obj['code'], $codes)) {
                         $user = User::create($att);
                     } else {
                         return back()->withErrors(['error' => '只有縣府及社大人員可登入']);
