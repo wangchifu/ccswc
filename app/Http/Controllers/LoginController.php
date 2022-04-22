@@ -26,6 +26,8 @@ class LoginController extends Controller
         }
 
         if ($request->input('login_type') == 'gsuite') {
+            $codes = config('ccswc.codes');
+
             //檢驗gsuite帳密
             $data = ['email' => $request->input('username'), 'password' => $request->input('password')];
             $data_string = json_encode($data);
@@ -79,8 +81,6 @@ class LoginController extends Controller
                     $att['title'] = $obj['title'];
                     $att['login_type'] = 'gsuite';
 
-                    $codes = config('ccswc.codes');
-
                     if ($obj['code'] == '079998' or $obj['code'] == '079999' or in_array($obj['code'], $codes)) {
                         $user = User::create($att);
                     } else {
@@ -121,7 +121,12 @@ class LoginController extends Controller
         }
         //登入
         if (Auth::attempt(['username' => $username, 'password' => $request->input('password')])) {
-            return redirect()->route('index');
+            if ($request->input('login_type') == 'gsuite') {
+                if (in_array($obj['code'], $codes)) return redirect()->route('posts.school_index');
+                if ($obj['code'] == '079998' or $obj['code'] == '079999') return redirect()->route('posts.index');
+            } else {
+                return redirect()->route('index');
+            }
         } else {
             return back()->withErrors(['error' => '帳號密碼錯誤']);
         }

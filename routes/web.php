@@ -120,6 +120,10 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('users/{user}/delete', [UsersController::class, 'delete'])->name('users.delete');
     Route::get('users/{user}/able', [UsersController::class, 'able'])->name('users.able');
     Route::get('users/{user}/back_pwd', [UsersController::class, 'back_pwd'])->name('users.back_pwd');
+
+    Route::get('title_image', [HomeController::class, 'title_image'])->name('title_image');
+    Route::post('title_image/store', [HomeController::class, 'title_image_store'])->name('title_image_store');
+    Route::get('title_image/delete', [HomeController::class, 'title_image_delete'])->name('title_image_delete');
 });
 
 //社大管理者可
@@ -176,6 +180,7 @@ Route::group(['middleware' => 'social_education'], function () {
     Route::get('reports/{report}/delete', [ReportsController::class, 'delete'])->name('reports.delete');
     Route::get('reports/{report}/trash', [ReportsController::class, 'trash'])->name('reports.trash');
     Route::get('reports/{report}/excel', [ReportsController::class, 'excel'])->name('reports.excel');
+    Route::get('reports/{report}/download_excel', [ReportsController::class, 'download_excel'])->name('reports.download_excel');
 
     Route::get('law/create', [HomeController::class, 'law_create'])->name('law.create');
     Route::post('law/store', [HomeController::class, 'law_store'])->name('law.store');

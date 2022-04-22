@@ -22,7 +22,7 @@
 <br>
 <div class="card">
     <div class="card-header">
-        <img src="..." class="card-img-top" alt="...">
+        <img src="{{ asset('images/intro.jpg') }}" class="card-img-top" alt="...">
     </div>
     <div class="card-body">
         {!! $content !!}

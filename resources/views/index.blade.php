@@ -5,9 +5,6 @@
 @section('banner')
 <section id="hero-animated" class="hero-animated d-flex align-items-center">
     <div class="container d-flex flex-column justify-content-center align-items-center text-center position-relative" data-aos="zoom-out">
-      <img src="{{ asset('images/community.png') }}" class="img-fluid animated">
-      <h2>歡迎光臨 <span>CCSWC</span></h2>
-      <p>Welcome to visit community college's service web of Changhua.</p>
 <!--
       <div class="d-flex">
         <a href="#about" class="btn-get-started scrollto">Get Started</a>
@@ -16,7 +13,7 @@
     </div>
 -->
     <h1>最新公告</h1>
-    <table class="table table-striped">
+    <table class="table table-striped" style="text-align: left;">
       <thead class="table-light">
       <tr>
           <th nowrap>
@@ -55,6 +52,19 @@
       </tbody>
     </table>
     <a href="{{ route('posts.view') }}" class="btn btn-info btn-sm">更多公告</a>
+    <br>
+    <?php
+      if(file_exists(storage_path('app/public/title_image/title_image.jpg'))){
+        $img = asset('storage/title_image/title_image.jpg');
+      }else{
+        $img = asset('images/community.png');
+      }
+    ?>
+    <img src="{{ $img }}" class="img-fluid animated">
+    <h2>歡迎光臨 <span>CCSWC</span></h2>
+    <p>Welcome to visit community college's service web of Changhua.</p>
+
+
   </section>
 @endsection
 

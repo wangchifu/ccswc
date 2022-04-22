@@ -16,7 +16,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ route('community.view') }}">社區大學一覽表</a></li>
-      <li class="breadcrumb-item active" aria-current="page">二林社大</li>
+      <li class="breadcrumb-item active" aria-current="page">{{ $communities[$code] }}</li>
     </ol>
 </nav>
 @auth
@@ -28,7 +28,7 @@
 <br>
 <div class="card">
     <div class="card-header">
-        <img src="..." class="card-img-top" alt="...">
+        <img src="{{ asset('images/schools/'.$code.'.jpg') }}" class="card-img-top" alt="...">
     </div>
     <div class="card-body">
         

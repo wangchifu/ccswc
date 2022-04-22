@@ -402,4 +402,31 @@ class HomeController extends Controller
         $content->delete();
         return redirect()->route('resource.view');
     }
+
+    public function title_image()
+    {
+        return view('title_image');
+    }
+    public function title_image_store(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $info = [
+                'mime-type' => $file->getMimeType(),
+                'original_filename' => $file->getClientOriginalName(),
+                'extension' => $file->getClientOriginalExtension(),
+            ];
+            $file->storeAs('public/title_image/', 'title_image.jpg');
+        }
+
+        return redirect()->route('title_image');
+    }
+
+    public function title_image_delete()
+    {
+        if (file_exists(storage_path('app/public/title_image/title_image.jpg'))) {
+            unlink(storage_path('app/public/title_image/title_image.jpg'));
+        }
+        return redirect()->route('title_image');
+    }
 }

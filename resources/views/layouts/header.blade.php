@@ -13,8 +13,10 @@
           @auth
           <li class="dropdown"><a href="#"><span>公告訊息</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>              
-              <li><a href="{{ route('posts.view') }}">一般公告</a></li>                  
-              <li><a href="{{ route('posts.school_index') }}">公告簽收</a></li>                  
+              <li><a href="{{ route('posts.view') }}">一般公告</a></li>
+              @if(in_array(auth()->user()->code,config('ccswc.codes')))                  
+              <li><a href="{{ route('posts.school_index') }}">公告簽收</a></li>
+              @endif                  
             </ul>
           </li>
           @endauth
@@ -35,7 +37,9 @@
                     <li><a href="{{ route('students.index') }}">學員統計資料</a></li>
                   </ul>
                 </li>
-                <li><a href="{{ route('reports.school_index') }}">調查填報</a></li>                  
+                @if(in_array(auth()->user()->code,config('ccswc.codes')))    
+                  <li><a href="{{ route('reports.school_index') }}">調查填報</a></li>    
+                @endif              
               </ul>
             </li>
           @endauth
@@ -54,13 +58,22 @@
           <li><a class="nav-link scrollto" href="{{ route('login') }}">GSuite登入</a></li>
           @endguest
           @auth
-          <li class="dropdown"><a href="#"><span><i class="fas fa-user"></i> {{ auth()->user()->name }}</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+          <li class="dropdown"><a href="#"><span><i class="fas fa-user"></i>
+            <?php  $communities = config('ccswc.communities'); ?>
+            @if(isset($communities[auth()->user()->code]))
+              {{ $communities[auth()->user()->code] }}
+            @elseif(auth()->user()->code == "079999" or auth()->user()->code == "079998")
+              教育處
+            @endif
+             {{ auth()->user()->name }}</span> 
+             <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>
               @if(auth()->user()->school_admin==1)
                 <li><a class="nav-link scrollto" href="{{ route('users.school_index') }}">本校使用者管理</a></li>
               @endif
               @if(auth()->user()->admin==1)
                 <li><a class="nav-link scrollto" href="{{ route('users.index') }}">使用者管理</a></li>
+                <li><a class="nav-link scrollto" href="{{ route('title_image') }}">首頁圖片</a></li>
               @endif
               @if(auth()->user()->social_education > 0)
                 <li><a class="nav-link scrollto" href="{{ route('posts.index') }}">公告系統</a></li>

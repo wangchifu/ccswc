@@ -16,6 +16,7 @@
       <li class="breadcrumb-item active" aria-current="page">填報統計</li>
     </ol>
 </nav>
+<a href="{{ route('reports.download_excel',$report->id) }}"><i class="fas fa-download text-primary"></i> 下載 excel 檔</a>
 <table class="table table-striped">
     <thead class="table-light">
     <tr>
@@ -49,7 +50,7 @@
                     @if(isset($all_answers[$k][$question->id]))
                         @if($question->type=="checkbox")
                             @foreach(unserialize($all_answers[$k][$question->id]) as $k1=>$v1)
-                                {{ $k1 }},
+                                {{ $v1 }},
                             @endforeach
                         @else
                             {{ $all_answers[$k][$question->id] }}

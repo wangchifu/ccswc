@@ -9,6 +9,7 @@ use App\Models\Question;
 use App\Models\Report;
 use App\Models\ReportSchool;
 use Illuminate\Http\Request;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class ReportsController extends Controller
 {
@@ -24,7 +25,7 @@ class ReportsController extends Controller
             })->count();
 
         $unreview_posts = Post::where('situation', '1')
-        ->count();
+            ->count();
 
         $unpass_reports = Report::where('user_id', auth()->user()->id)
             ->where(function ($query) {
@@ -33,7 +34,7 @@ class ReportsController extends Controller
             })->count();
 
         $unreview_reports = Report::where('situation', '1')
-        ->count();
+            ->count();
 
         $reports = Report::where('user_id', auth()->user()->id)
             ->orderBy('situation')
@@ -87,7 +88,7 @@ class ReportsController extends Controller
                     'original_filename' => $file->getClientOriginalName(),
                     'extension' => $file->getClientOriginalExtension(),
                 ];
-                $file->storeAs('public/reports/'.$report->id, $info['original_filename']);
+                $file->storeAs('public/reports/' . $report->id, $info['original_filename']);
             }
         }
 
@@ -96,7 +97,7 @@ class ReportsController extends Controller
             $type = $request->input('question_type');
             $att2['type'] = $type[$k];
             if ($att2['type'] == 'radio' or $att2['type'] == 'checkbox') {
-                $options = serialize($request->input('option'.$k));
+                $options = serialize($request->input('option' . $k));
             } elseif ($att2['type'] == 'text' or $att2['type'] == 'num') {
                 $options = null;
             }
@@ -134,8 +135,8 @@ class ReportsController extends Controller
     {
         $communities = config('ccswc.communities');
         $question_types = config('ccswc.question_types');
-        $files = (file_exists(storage_path('app/public/reports/'.$report->id))) ?
-            get_files(storage_path('app/public/reports/'.$report->id)) : '';
+        $files = (file_exists(storage_path('app/public/reports/' . $report->id))) ?
+            get_files(storage_path('app/public/reports/' . $report->id)) : '';
         $data = [
             'communities' => $communities,
             'question_types' => $question_types,
@@ -164,7 +165,7 @@ class ReportsController extends Controller
                     'original_filename' => $file->getClientOriginalName(),
                     'extension' => $file->getClientOriginalExtension(),
                 ];
-                $file->storeAs('public/reports/'.$report->id, $info['original_filename']);
+                $file->storeAs('public/reports/' . $report->id, $info['original_filename']);
             }
         }
 
@@ -180,7 +181,7 @@ class ReportsController extends Controller
             $type = $request->input('question_type');
             $att2['type'] = $type[$k];
             if ($att2['type'] == 'radio' or $att2['type'] == 'checkbox') {
-                $options = serialize($request->input('option'.$k));
+                $options = serialize($request->input('option' . $k));
             } elseif ($att2['type'] == 'text' or $att2['type'] == 'num') {
                 $options = null;
             }
@@ -196,8 +197,8 @@ class ReportsController extends Controller
 
     public function delete_file($report_id, $filename)
     {
-        if (file_exists(storage_path('app/public/reports/'.$report_id.'/'.$filename))) {
-            unlink(storage_path('app/public/reports/'.$report_id.'/'.$filename));
+        if (file_exists(storage_path('app/public/reports/' . $report_id . '/' . $filename))) {
+            unlink(storage_path('app/public/reports/' . $report_id . '/' . $filename));
         }
 
         return redirect()->route('reports.edit', $report_id);
@@ -217,30 +218,76 @@ class ReportsController extends Controller
     {
         $communities = config('ccswc.communities');
         $for_schools = unserialize($report->for_schools);
-        $answers = Answer::where('report_id',$report->id)
+        $answers = Answer::where('report_id', $report->id)
             ->get();
-        
-        foreach($answers as $answer){
+
+        foreach ($answers as $answer) {
             $all_answers[$answer->code][$answer->question_id] = $answer->answer;
         }
-        
+
         $report_signed = [];
-        foreach($report->report_schools as $report_school){
-            if($report_school->signed_user_id){
+        foreach ($report->report_schools as $report_school) {
+            if ($report_school->signed_user_id) {
                 $report_signed[$report_school->code]['name'] = $report_school->user->name;
                 $report_signed[$report_school->code]['updated_at'] = $report_school->updated_at;
-            }            
-        }        
-        
+            }
+        }
+
         $data = [
-            'communities'=>$communities,
-            'report'=>$report,
-            'for_schools'=>$for_schools,
-            'all_answers'=>$all_answers,
-            'report_signed'=>$report_signed,
+            'communities' => $communities,
+            'report' => $report,
+            'for_schools' => $for_schools,
+            'all_answers' => $all_answers,
+            'report_signed' => $report_signed,
         ];
 
-        return view('reports.excel',$data);
+        return view('reports.excel', $data);
+    }
+
+    public function download_excel(Report $report)
+    {
+        $communities = config('ccswc.communities');
+        $for_schools = unserialize($report->for_schools);
+        $answers = Answer::where('report_id', $report->id)
+            ->get();
+
+        foreach ($answers as $answer) {
+            $all_answers[$answer->code][$answer->question_id] = $answer->answer;
+        }
+
+        $report_signed = [];
+        foreach ($report->report_schools as $report_school) {
+            if ($report_school->signed_user_id) {
+                $report_signed[$report_school->code]['name'] = $report_school->user->name;
+                $report_signed[$report_school->code]['updated_at'] = $report_school->updated_at;
+            }
+        }
+
+        $data = [];
+        $i = 0;
+        foreach ($communities as $k => $v) {
+            $data[$i]['學校'] = $v;
+            $data[$i]['填報者'] = (isset($report_signed[$k])) ? $report_signed[$k]['name'] . " " . $report_signed[$k]['updated_at'] : "";
+            foreach ($report->questions as $question) {
+                if (isset($all_answers[$k][$question->id])) {
+                    if ($question->type == "checkbox") {
+                        foreach (unserialize($all_answers[$k][$question->id]) as $k1 => $v1) {
+                            if (!isset($data[$i][$question->title])) $data[$i][$question->title] = "";
+                            $data[$i][$question->title] .= $v1 . ",";
+                        }
+                    } else {
+                        $data[$i][$question->title] = $all_answers[$k][$question->id];
+                    }
+                } else {
+                    $data[$i][$question->title] = "";
+                }
+            }
+            $i++;
+        }
+
+        $list = collect($data);
+
+        return (new FastExcel($list))->download('report' . $report->id . '.xlsx');
     }
 
     public function trash(Report $report)
@@ -260,13 +307,13 @@ class ReportsController extends Controller
             ->get();
 
         $unpass_posts = Post::where('user_id', auth()->user()->id)
-        ->where(function ($query) {
-            $query->where('situation', '0');
-            $query->orwhere('situation', '1');
-        })->count();
+            ->where(function ($query) {
+                $query->where('situation', '0');
+                $query->orwhere('situation', '1');
+            })->count();
 
         $unreview_posts = Post::where('situation', '1')
-        ->count();
+            ->count();
 
         $unpass_reports = Report::where('user_id', auth()->user()->id)
             ->where(function ($query) {
@@ -275,7 +322,7 @@ class ReportsController extends Controller
             })->count();
 
         $unreview_reports = Report::where('situation', '1')
-        ->count();
+            ->count();
 
         $categories = config('ccswc.categories');
         $situations = config('ccswc.situations');
@@ -328,12 +375,12 @@ class ReportsController extends Controller
             ->get();
 
         $unsign_posts = PostSchool::where('code', auth()->user()->code)
-        ->where('signed_at', null)
-        ->count();
+            ->where('signed_at', null)
+            ->count();
 
         $unsign_reports = ReportSchool::where('code', auth()->user()->code)
-        ->where('signed_at', null)
-        ->count();
+            ->where('signed_at', null)
+            ->count();
 
         $categories = config('ccswc.categories');
         $types = config('ccswc.types');
@@ -353,8 +400,8 @@ class ReportsController extends Controller
         $situations = config('ccswc.situations');
         $types = config('ccswc.types');
         $report_school = ReportSchool::where('code', auth()->user()->code)
-        ->where('report_id', $report->id)
-        ->first();
+            ->where('report_id', $report->id)
+            ->first();
 
         $data = [
             'report' => $report,
@@ -376,12 +423,12 @@ class ReportsController extends Controller
         }
 
         $answer = $request->input('answer');
-    
+
         foreach ($request->input('type') as $k => $v) {
             if ($v == 'checkbox') {
                 $att2['answer'] = '';
-                if (!empty($request->input('answer_checkbox'.$k))) {
-                    $att2['answer'] = serialize($request->input('answer_checkbox'.$k));
+                if (!empty($request->input('answer_checkbox' . $k))) {
+                    $att2['answer'] = serialize($request->input('answer_checkbox' . $k));
                 }
             } else {
                 $att2['answer'] = $answer[$k];
@@ -390,36 +437,36 @@ class ReportsController extends Controller
             $att2['question_id'] = $k;
             $att2['report_school_id'] = $report_school->id;
             $att2['code'] = auth()->user()->code;
-            
+
             //檢查是否已填過
-            $check = Answer::where('report_id',$att2['report_id'])
-            ->where('question_id',$k)
-            ->where('report_school_id',$att2['report_school_id'])
-            ->where('code',$att2['code'])
-            ->first();
-            if(empty($check)){
+            $check = Answer::where('report_id', $att2['report_id'])
+                ->where('question_id', $k)
+                ->where('report_school_id', $att2['report_school_id'])
+                ->where('code', $att2['code'])
+                ->first();
+            if (empty($check)) {
                 Answer::create($att2);
-            }        
+            }
         }
-        echo '儲存完畢，<span style="color:red;">請按右上角 X 關閉子視窗</span>。 <img src="'.asset('images/cross.png').'" width="20">';
+        echo '儲存完畢，<span style="color:red;">請按 右上角 X 關閉子視窗</span>。';
     }
 
     public function school_edit(Report $report)
-    {    
+    {
         $situations = config('ccswc.situations');
         $types = config('ccswc.types');
         $report_school = ReportSchool::where('code', auth()->user()->code)
-        ->where('report_id', $report->id)
-        ->first();
+            ->where('report_id', $report->id)
+            ->first();
 
-        $all_answers = Answer::where('report_school_id',$report_school->id)
-            ->where('code',auth()->user()->code)
+        $all_answers = Answer::where('report_school_id', $report_school->id)
+            ->where('code', auth()->user()->code)
             ->get();
 
-        foreach($all_answers as $all_answer){
-            if($all_answer->question->type=="checkbox"){            
+        foreach ($all_answers as $all_answer) {
+            if ($all_answer->question->type == "checkbox") {
                 $answer[$all_answer->question_id] = unserialize($all_answer->answer);
-            }else{
+            } else {
                 $answer[$all_answer->question_id] = $all_answer->answer;
             }
         }
@@ -429,7 +476,7 @@ class ReportsController extends Controller
             'report_school' => $report_school,
             'situations' => $situations,
             'types' => $types,
-            'answer'=>$answer,
+            'answer' => $answer,
         ];
 
         return view('reports.school_edit', $data);
@@ -444,51 +491,51 @@ class ReportsController extends Controller
             $report_school->update($att);
         }
 
-        $answer = $request->input('answer');        
+        $answer = $request->input('answer');
 
         foreach ($request->input('type') as $k => $v) {
             if ($v == 'checkbox') {
                 $att2['answer'] = '';
-                if (!empty($request->input('answer_checkbox'.$k))) {
-                    $att2['answer'] = serialize($request->input('answer_checkbox'.$k));
+                if (!empty($request->input('answer_checkbox' . $k))) {
+                    $att2['answer'] = serialize($request->input('answer_checkbox' . $k));
                 }
             } else {
                 $att2['answer'] = $answer[$k];
-            }            
+            }
 
             $att2['report_id'] = $report_school->report_id;
             $att2['question_id'] = $k;
             $att2['report_school_id'] = $report_school->id;
             $att2['code'] = auth()->user()->code;
-            
-            
-            $update_answer= Answer::where('report_id',$att2['report_id'])
-            ->where('question_id',$k)
-            ->where('report_school_id',$att2['report_school_id'])
-            ->where('code',$att2['code'])
-            ->first();                    
-            
+
+
+            $update_answer = Answer::where('report_id', $att2['report_id'])
+                ->where('question_id', $k)
+                ->where('report_school_id', $att2['report_school_id'])
+                ->where('code', $att2['code'])
+                ->first();
+
             $update_answer->update($att2);
         }
-        echo '更新完畢，<span style="color:red;">請按右上角 X 關閉子視窗</span>。 <img src="'.asset('images/cross.png').'" width="20">';
+        echo '更新完畢，<span style="color:red;">請按右上角 X 關閉子視窗</span>。 <img src="' . asset('images/cross.png') . '" width="20">';
     }
 
     public function school_view(Report $report)
-    {    
+    {
         $situations = config('ccswc.situations');
         $types = config('ccswc.types');
         $report_school = ReportSchool::where('code', auth()->user()->code)
-        ->where('report_id', $report->id)
-        ->first();
+            ->where('report_id', $report->id)
+            ->first();
 
-        $all_answers = Answer::where('report_school_id',$report_school->id)
-            ->where('code',auth()->user()->code)
+        $all_answers = Answer::where('report_school_id', $report_school->id)
+            ->where('code', auth()->user()->code)
             ->get();
 
-        foreach($all_answers as $all_answer){
-            if($all_answer->question->type=="checkbox"){            
+        foreach ($all_answers as $all_answer) {
+            if ($all_answer->question->type == "checkbox") {
                 $answer[$all_answer->question_id] = unserialize($all_answer->answer);
-            }else{
+            } else {
                 $answer[$all_answer->question_id] = $all_answer->answer;
             }
         }
@@ -498,7 +545,7 @@ class ReportsController extends Controller
             'report_school' => $report_school,
             'situations' => $situations,
             'types' => $types,
-            'answer'=>$answer,
+            'answer' => $answer,
         ];
 
         return view('reports.school_view', $data);
@@ -511,14 +558,14 @@ class ReportsController extends Controller
         $report_school->update($att);
 
         return redirect()->route('reports.school_index');
-    } 
-    
+    }
+
     public function school_pass(ReportSchool $report_school)
     {
         $att['situation'] = 2;
-        $att['review_user_id'] = auth()->user()->id;        
+        $att['review_user_id'] = auth()->user()->id;
         $report_school->update($att);
 
         return redirect()->route('reports.school_index');
-    }    
+    }
 }
