@@ -63,7 +63,7 @@
                     ?>
                     <a href="{{ $download }}" target="_blank">
                     {{ $law->content }}
-                    @if(empty($download))
+                    @if($download == "#")
                         <span class="text-danger">(檔案遺失)</span>
                     @endif
                     </a>
