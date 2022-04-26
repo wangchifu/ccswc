@@ -54,10 +54,18 @@
                 <td>
                     <?php 
                         $file = get_files(storage_path('app/public/contents/'.$law->id));    
-                        $download = asset('storage/contents/'.$law->id.'/'.$file[0]);
+                        if(!empty($file)){
+                            $download = asset('storage/contents/'.$law->id.'/'.$file[0]);
+                        }else{
+                            $download = "#";
+                        }
+                        
                     ?>
                     <a href="{{ $download }}" target="_blank">
                     {{ $law->content }}
+                    @if(empty($download))
+                        <span class="text-danger">(檔案遺失)</span>
+                    @endif
                     </a>
                 </td>
                 <td>
