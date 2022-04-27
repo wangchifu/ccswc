@@ -103,7 +103,7 @@
                         學校網站
                     </th>
                     <td>
-                        {{ $community->website }}
+                        <a href="{{ $community->website }}" target="_blank">{{ $community->website }}</a>
                     </td>
                 </tr>
                 <tr>
