@@ -29,10 +29,14 @@
       <td rowspan="2" colspan="2">
         <h3>{{ $student->year }} {{ $communities[$student->code] }}</h3>
         <br>學員統計資料<br>
-        <div class="btn-group" role="group" aria-label="Basic outlined example">
-          <a href="{{ route('students.edit',$student->id) }}" class="btn btn-outline-primary btn-sm">編</a>
-          <a href="{{ route('students.delete',$student->id) }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('確定刪除？')">刪</a>
-        </div>
+        @auth
+            @if(auth()->user()->code <> "079999")
+              <div class="btn-group" role="group" aria-label="Basic outlined example">
+                <a href="{{ route('students.edit',$student->id) }}" class="btn btn-outline-primary btn-sm">編</a>
+                <a href="{{ route('students.delete',$student->id) }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('確定刪除？')">刪</a>
+              </div>
+            @endif
+        @endauth
       </td>
       <td colspan="2">
         春季班

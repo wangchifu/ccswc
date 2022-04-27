@@ -89,18 +89,18 @@
                 </td>
                 <td>
                     {{ $staff->ps }}
-                </td>
+                </td>                
+                @auth
                 <td>
-                    @auth
-                        @if(in_array(auth()->user()->code,$codes))
-                            <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                <a href="{{ route('staffs.create_one',$staff->staff_season_id) }}" class="btn btn-outline-success btn-sm">增</a>
-                                <a href="{{ route('staffs.edit_one',$staff->id) }}" class="btn btn-outline-primary btn-sm">編</a>
-                                <a href="{{ route('staffs.delete_one',$staff->id) }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('確定刪除？')">刪</a>
-                            </div>
-                        @endif
-                    @endauth
+                    @if(in_array(auth()->user()->code,$codes))
+                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <a href="{{ route('staffs.create_one',$staff->staff_season_id) }}" class="btn btn-outline-success btn-sm">增</a>
+                            <a href="{{ route('staffs.edit_one',$staff->id) }}" class="btn btn-outline-primary btn-sm">編</a>
+                            <a href="{{ route('staffs.delete_one',$staff->id) }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('確定刪除？')">刪</a>
+                        </div>
+                    @endif
                 </td>
+                @endauth                
             </tr>
         @endforeach
     </tbody>
