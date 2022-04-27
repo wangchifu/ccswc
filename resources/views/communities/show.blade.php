@@ -31,7 +31,100 @@
         <img src="{{ asset('images/schools/'.$code.'.jpg') }}" class="card-img-top" alt="...">
     </div>
     <div class="card-body">
-        
+        @if(!empty($community))
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th class="col-2">
+                        學校全名(簡稱)
+                    </th>
+                    <td class="col-10">
+                        {{ $community->school_name }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        校長姓名
+                    </th>
+                    <td>
+                        {{ $community->principal_name }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        主要地址
+                    </th>
+                    <td>
+                        {{ $community->address }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        主要電話
+                    </th>
+                    <td>
+                        {{ $community->telephone_number }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        傳真電話
+                    </th>
+                    <td>
+                        {{ $community->fax_number }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        電子信箱
+                    </th>
+                    <td>
+                        {{ $community->email }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        分部資料
+                    </th>
+                    <td>
+                        {{ $community->branch }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        上課地點
+                    </th>
+                    <td>
+                        {!! $community->class_location !!}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        學校網站
+                    </th>
+                    <td>
+                        {{ $community->website }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        辦理單位
+                    </th>
+                    <td>
+                        {{ $community->unit }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        學校簡介
+                    </th>
+                    <td>
+                        {!! $community->introduction !!}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        @endif
     </div>
 </div>
 <br>

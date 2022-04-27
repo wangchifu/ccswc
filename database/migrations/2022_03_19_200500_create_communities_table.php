@@ -22,11 +22,11 @@ return new class() extends Migration
             $table->string('telephone_number')->nullable();
             $table->string('fax_number')->nullable();
             $table->string('email')->nullable();
-            $table->text('branch')->nullable();
-            $table->string('class_location')->nullable();
+            $table->string('branch')->nullable();
+            $table->text('class_location')->nullable();
             $table->string('website')->nullable();
             $table->string('unit')->nullable();
-            $table->string('introduction')->nullable();
+            $table->text('introduction')->nullable();
             $table->unsignedInteger('user_id');
             $table->timestamps();
         });
