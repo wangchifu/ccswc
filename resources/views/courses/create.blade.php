@@ -47,7 +47,7 @@
 
     <div class="mb-3 w-25">
         <label for="start_date" class="form-label"><span class="text-danger">*</span>開學日期</label>
-        <input type="text" width="200" id="start_date" name="start_date" class="form-control rq" required onclick="change_button2()" value="{{ date('Y-m-d') }}">
+        <input type="text" width="200" id="start_date" name="start_date" class="form-control rq" required onclick="change_button2()" value="{{ date('Y-m-d') }}"><small class="text-secondary">(請依 YYYY-MM-DD 格式)</small>
           <script src="{{ asset('gijgo/js/messages/messages.zh-TW.js') }}"></script>
           <script>
               $('#start_date').datepicker({
