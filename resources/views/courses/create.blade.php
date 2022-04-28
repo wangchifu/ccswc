@@ -10,6 +10,8 @@
 @endsection
 
 @section('content')
+<script src="{{ asset('gijgo/js/gijgo.min.js') }}" type="text/javascript"></script>
+<link href="{{ asset('gijgo/css/gijgo.min.css') }}" rel="stylesheet" type="text/css">
 <h1>
     {{ $communities[auth()->user()->code] }} 新增課程表
 </h1>
@@ -45,7 +47,14 @@
 
     <div class="mb-3 w-25">
         <label for="start_date" class="form-label"><span class="text-danger">*</span>開學日期</label>
-        <input type="date" class="form-control rq" id="start_date" name="start_date" required onclick="change_button2()">
+        <input type="text" width="200" id="start_date" name="start_date" class="form-control rq" required onclick="change_button2()" value="{{ date('Y-m-d') }}">
+          <script src="{{ asset('gijgo/js/messages/messages.zh-TW.js') }}"></script>
+          <script>
+              $('#start_date').datepicker({
+                  format: 'yyyy-mm-dd',
+                  locale: 'zh-TW',
+              });
+          </script>
     </div>
     
     <div class="mb-3 w-25">
