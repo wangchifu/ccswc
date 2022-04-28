@@ -93,7 +93,7 @@
                 @auth                
                     @if(in_array(auth()->user()->code,$codes))
                     <td>
-                        @if(auth()->user()->code == $course->code)
+                        @if(auth()->user()->code == $staff->code)
                         <div class="btn-group" role="group" aria-label="Basic outlined example">
                             <a href="{{ route('staffs.create_one',$staff->staff_season_id) }}" class="btn btn-outline-success btn-sm">增</a>
                             <a href="{{ route('staffs.edit_one',$staff->id) }}" class="btn btn-outline-primary btn-sm">編</a>

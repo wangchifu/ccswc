@@ -31,7 +31,7 @@
         <br>學員統計資料<br>
         @auth
             @if(auth()->user()->code <> "079999")
-              @if(auth()->user()->code == $course->code)
+              @if(auth()->user()->code == $student->code)
               <div class="btn-group" role="group" aria-label="Basic outlined example">
                 <a href="{{ route('students.edit',$student->id) }}" class="btn btn-outline-primary btn-sm">編</a>
                 <a href="{{ route('students.delete',$student->id) }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('確定刪除？')">刪</a>
