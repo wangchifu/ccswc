@@ -221,6 +221,7 @@ class ReportsController extends Controller
         $answers = Answer::where('report_id', $report->id)
             ->get();
 
+        $all_answers = [];
         foreach ($answers as $answer) {
             $all_answers[$answer->code][$answer->question_id] = $answer->answer;
         }
