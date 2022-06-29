@@ -101,6 +101,7 @@
     @endforeach
     </tbody>
 </table>
+{{ $posts->links() }}
 <br>
 <script>
     function check_pass(){
