@@ -206,9 +206,8 @@ class PostsController extends Controller
 
     public function review()
     {
-        $posts = Post::where('situation', '1')
-            ->orderBy('updated_at', 'DESC')
-            ->get();
+        $posts = Post::orderBy('updated_at', 'DESC')
+            ->paginate(10);
 
         $unpass_posts = Post::where('user_id', auth()->user()->id)
             ->where(function ($query) {
@@ -218,7 +217,6 @@ class PostsController extends Controller
 
         $unreview_posts = Post::where('situation', '1')
             ->count();
-
         $unpass_reports = Report::where('user_id', auth()->user()->id)
             ->where(function ($query) {
                 $query->where('situation', '0');

@@ -90,10 +90,12 @@
                 {{ $post->created_at }}
             </td>
             <td nowrap>
-                <div class="pass_button">
-                    <a href="{{ route('posts.pass',$post->id) }}" onclick="return check_pass();"><i class="fas fa-check-circle text-success"></i></a> --        
-                    <a href="{{ route('posts.back',$post->id) }}" onclick="return confirm('確定退回？')"><i class="fas fa-chevron-circle-left text-danger"></i></a>
-                </div>
+                @if($post->situation==1)
+                    <div class="pass_button">
+                        <a href="{{ route('posts.pass',$post->id) }}" onclick="return check_pass();"><i class="fas fa-check-circle text-success"></i></a> --        
+                        <a href="{{ route('posts.back',$post->id) }}" onclick="return confirm('確定退回？')"><i class="fas fa-chevron-circle-left text-danger"></i></a>
+                    </div>
+                @endif
             </td>
         </tr>
     @endforeach
