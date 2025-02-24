@@ -76,6 +76,7 @@ class LoginController extends Controller
                     $att['username'] = $username;
                     $att['name'] = $obj['name'];
                     $att['password'] = bcrypt($request->input('password'));
+                    $att['personid'] = $obj['edu_key'];
                     $att['code'] = $obj['code'];
                     $att['kind'] = $obj['kind'];
                     $att['title'] = $obj['title'];
@@ -94,6 +95,7 @@ class LoginController extends Controller
                     //有此使用者，即更新使用者資料
                     $att['name'] = $obj['name'];
                     $att['password'] = bcrypt($request->input('password'));
+                    $att['personid'] = $obj['edu_key'];
                     $att['code'] = $obj['code'];
                     $att['kind'] = $obj['kind'];
                     $att['title'] = $obj['title'];

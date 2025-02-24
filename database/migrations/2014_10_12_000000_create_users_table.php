@@ -16,6 +16,7 @@ return new class() extends Migration {
             $table->id();
             $table->string('username')->unique();
             $table->string('password');
+            $table->string('personid')->nullable();
             $table->string('login_type')->nullable();
             $table->string('code')->nullable(); //gsuite's code
             $table->string('kind')->nullable(); //gsuite's kind
