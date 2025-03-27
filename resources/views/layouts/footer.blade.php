@@ -19,22 +19,22 @@
           <div class="col-lg-4 col-md-6 footer-links">
             <h4>官方連結</h4>
             <ul>
-              <li><i class="bi bi-chevron-right"></i> <a href="https://www.chcg.gov.tw/" target="_blank">彰化縣政府</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="https://www.newboe.chc.edu.tw" target="_blank">彰化縣政府教育處</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="https://www.newboe.chc.edu.tw/introduction/organization/show/D" target="_blank">彰化縣政府教育處社教科</a></li>
+              <li><a href="https://www.chcg.gov.tw/" target="_blank">彰化縣政府</a></li>
+              <li><a href="https://www.newboe.chc.edu.tw" target="_blank">彰化縣政府教育處</a></li>
+              <li><a href="https://www.newboe.chc.edu.tw/introduction/organization/show/D" target="_blank">彰化縣政府教育處社教科</a></li>
             </ul>
           </div>
 
           <div class="col-lg-4 col-md-6 footer-links">
             <h4>相關連結</h4>
             <ul>                        
-              <li><i class="bi bi-chevron-right"></i> <a href="https://rulin.org.tw/" target="_blank">二林社大</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="http://www.rstcc.tw/" target="_blank">二社田社大</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="http://www.ylcu.org.tw/" target="_blank">員永村社大</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="https://chcu.org.tw/" target="_blank">彰化社區大學</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="http://www.xn--0iss4a187be5j.tw/Default.aspx" target="_blank">湖埔社大</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="https://hsscu.dyu.edu.tw/" target="_blank">美港西社大</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="http://ls.ccu.org.tw/" target="_blank">鹿秀社大</a></li>
+              <li><a href="https://rulin.org.tw/" target="_blank">二林社大</a></li>
+              <li><a href="http://www.rstcc.tw/" target="_blank">二社田社大</a></li>
+              <li><a href="http://www.ylcu.org.tw/" target="_blank">員永村社大</a></li>
+              <li><a href="https://chcu.org.tw/" target="_blank">彰化社區大學</a></li>
+              <li><a href="http://www.xn--0iss4a187be5j.tw/Default.aspx" target="_blank">湖埔社大</a></li>
+              <li><a href="https://hsscu.dyu.edu.tw/" target="_blank">美港西社大</a></li>
+              <li><a href="http://ls.ccu.org.tw/" target="_blank">鹿秀社大</a></li>
             </ul>
           </div>
 
