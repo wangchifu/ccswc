@@ -7,8 +7,8 @@
 
   <title>@yield('title')彰化縣社區大學聯合服務網</title>
   <meta content="" name="description">
-  <meta content="" name="keywords">
-
+  <meta content="" name="keywords">  
+  
   <!-- Favicons -->
   <link href="{{ asset('HeroBiz/assets/img/favicon.png') }}" rel="icon">
   <link href="{{ asset('HeroBiz/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
@@ -43,7 +43,7 @@
   <!-- venobox -->
   <link rel="stylesheet" href="{{ asset('venobox/venobox.min.css') }}" type="text/css" media="screen">
   <script src="{{ asset('venobox/venobox.min.js') }}"></script>
-  <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+  <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
 
 
   <!-- =======================================================
