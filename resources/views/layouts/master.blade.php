@@ -8,7 +8,7 @@
   <title>@yield('title')彰化縣社區大學聯合服務網</title>
   <meta content="" name="description">
   <meta content="" name="keywords">    
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none';img-src 'self' data:;style-src 'self';script-src 'self' 'unsafe-inline';font-src 'self';">       
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none';img-src 'self' data:;style-src 'self' 'unsafe-inline';script-src 'self' 'unsafe-inline';font-src 'self';connect-src 'self';">
   <!-- Favicons -->
   <link href="{{ asset('favicon.ico') }}" rel="icon">
   <link href="{{ asset('apple-touch-icon.png') }}" rel="apple-touch-icon">
