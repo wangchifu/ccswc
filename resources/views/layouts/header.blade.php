@@ -55,7 +55,7 @@
           @endguest
           <li><a class="nav-link scrollto" href="{{ route('resource.view') }}">網路資源</a></li>
           @guest
-          <li><a class="nav-link scrollto" href="{{ route('login') }}">GSuite登入</a></li>
+          <li><a class="nav-link scrollto" href="{{ route('login') }}">登入</a></li>
           @endguest
           @auth
           <li class="dropdown"><a href="#"><span><i class="fas fa-user"></i>

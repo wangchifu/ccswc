@@ -12,6 +12,14 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="col-lg-4 col-sm-12">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">1.彰化 GSuite 登入</button>
+            </li>
+            <li class="nav-item" role="presentation">
+               <a class="nav-link" href="{{ route('sso') }}">2.彰化縣雲端帳號登入</a>
+            </li>
+        </ul>
         <div class="card">
             <h4 class="card-header">GSuite 登入</h5>
             <div class="card-body">

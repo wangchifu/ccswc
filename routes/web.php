@@ -6,6 +6,7 @@ use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\OpenIDController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,10 @@ Route::get('show/{post}', [HomeController::class, 'show'])->name('show');
 //gsuite登入
 Route::get('mlogin', [LoginController::class, 'mlogin'])->name('mlogin');
 Route::get('login', [LoginController::class, 'login'])->name('login');
+
+//openid登入
+Route::get('sso', [OpenIDController::class,'sso'])->name('sso');
+Route::get('auth/callback', [OpenIDController::class,'callback'])->name('callback');
 
 Route::post('auth', [LoginController::class, 'auth'])->name('auth');
 
