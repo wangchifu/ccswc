@@ -26,8 +26,9 @@ Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('show/{post}', [HomeController::class, 'show'])->name('show');
 
 //gsuite登入
+Route::get('logins', [LoginController::class, 'logins'])->name('logins');
 Route::get('mlogin', [LoginController::class, 'mlogin'])->name('mlogin');
-Route::get('login', [LoginController::class, 'login'])->name('login');
+//Route::get('login', [LoginController::class, 'login'])->name('login');
 
 //openid登入
 Route::get('sso', [OpenIDController::class,'sso'])->name('sso');

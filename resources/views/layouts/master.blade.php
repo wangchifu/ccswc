@@ -38,6 +38,8 @@ setcookie('cross-site-cookie', 'name', ['samesite' => 'Strict', 'secure' => true
   <!-- Fontawesome -->
   <link rel="stylesheet" href="{{ asset('fontawesome-free-5.10.2-web/css/all.css')}}">
 
+  <link href="{{ asset('css/my_css.css') }}" rel="stylesheet">
+
   <!-- venobox -->
   <link rel="stylesheet" href="{{ asset('venobox/venobox.min.css') }}" type="text/css" media="screen">
   <script src="{{ asset('venobox/venobox.min.js') }}"></script>
