@@ -119,7 +119,11 @@ class OpenIDController extends Controller
       $user_obj['kind'] = $edufile['titles'][0]['titles'][1];   
       
       if ($user_obj['kind'] == "學生") {
-        return redirect()->route('logins')->withErrors(['errors' => ['學生禁止進入']]);
+        $url = "https://chc.sso.edu.tw/oidc/v1/logout-to-go";
+        $post_logout_redirect_uri = env('APP_URL');
+        $id_token_hint = session('id_token');
+        $link = $url . "?post_logout_redirect_uri=".$post_logout_redirect_uri."&id_token_hint=" . $id_token_hint;
+        return redirect($link)->withErrors(['error' => '學生禁止登入']);     
       }               
       $user_obj['title'] = $edufile['titles'][0]['titles'][0];
 
@@ -127,13 +131,21 @@ class OpenIDController extends Controller
         if ($user_obj['success']) {
 
             if ($user_obj['kind'] == "學生") {
-                return redirect()->route('logins')->withErrors(['errors' => ['學生禁止進入']]);
+              $url = "https://chc.sso.edu.tw/oidc/v1/logout-to-go";
+              $post_logout_redirect_uri = env('APP_URL');
+              $id_token_hint = session('id_token');
+              $link = $url . "?post_logout_redirect_uri=".$post_logout_redirect_uri."&id_token_hint=" . $id_token_hint;
+              return redirect($link)->withErrors(['error' => '學生禁止登入']);              
             }             
             $codes = config('ccswc.codes');
             if ($user_obj['code'] == '079998' or $user_obj['code'] == '079999' or in_array($user_obj['code'], $codes)) {
               
             } else {
-              return redirect()->route('logins')->withErrors(['error' => '只有縣府及社大人員可登入']);
+              $url = "https://chc.sso.edu.tw/oidc/v1/logout-to-go";
+              $post_logout_redirect_uri = env('APP_URL');
+              $id_token_hint = session('id_token');
+              $link = $url . "?post_logout_redirect_uri=".$post_logout_redirect_uri."&id_token_hint=" . $id_token_hint;
+              return redirect($link)->withErrors(['error' => '只有縣府及社大人員可登入']);              
             }
 
             //是否已有此帳號
