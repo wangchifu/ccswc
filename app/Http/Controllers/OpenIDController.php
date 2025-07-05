@@ -119,7 +119,7 @@ class OpenIDController extends Controller
       $user_obj['kind'] = $edufile['titles'][0]['titles'][1];   
       
       if ($user_obj['kind'] == "學生") {
-        return redirect()->route('login')->withErrors(['errors' => ['學生禁止進入']]);
+        return redirect()->route('logins')->withErrors(['errors' => ['學生禁止進入']]);
       }               
       $user_obj['title'] = $edufile['titles'][0]['titles'][0];
 
@@ -127,13 +127,13 @@ class OpenIDController extends Controller
         if ($user_obj['success']) {
 
             if ($user_obj['kind'] == "學生") {
-                return redirect()->route('login')->withErrors(['errors' => ['學生禁止進入']]);
+                return redirect()->route('logins')->withErrors(['errors' => ['學生禁止進入']]);
             }             
             $codes = config('ccswc.codes');
             if ($user_obj['code'] == '079998' or $user_obj['code'] == '079999' or in_array($user_obj['code'], $codes)) {
               
             } else {
-              return redirect()->route('login')->withErrors(['error' => '只有縣府及社大人員可登入']);
+              return redirect()->route('logins')->withErrors(['error' => '只有縣府及社大人員可登入']);
             }
 
             //是否已有此帳號
