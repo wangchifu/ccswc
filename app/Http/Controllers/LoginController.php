@@ -27,7 +27,7 @@ class LoginController extends Controller
     {
         //$schools = config('antidrug.schools');
         if ($request->input('chaptcha') != session('chaptcha')) {
-            return back()->withErrors(['error' => '驗證碼錯誤']);
+            return redirect()->route('logins')->withErrors(['error' => '驗證碼錯誤']);
         }
 
         if ($request->input('login_type') == 'gsuite') {
@@ -65,7 +65,7 @@ class LoginController extends Controller
             if ($obj['success']) {
                 //非教職員，即跳開
                 if ($obj['kind'] == '學生') {
-                    return back()->withErrors(['error' => '學生不能登入']);
+                    return redirect()->route('logins')->withErrors(['error' => '學生不能登入']);
                 }
 
                 //是否已有此帳號
@@ -90,12 +90,12 @@ class LoginController extends Controller
                     if ($obj['code'] == '079998' or $obj['code'] == '079999' or in_array($obj['code'], $codes)) {
                         $user = User::create($att);
                     } else {
-                        return back()->withErrors(['error' => '只有縣府及社大人員可登入']);
+                        return redirect()->route('logins')->withErrors(['error' => '只有縣府及社大人員可登入']);
                     }
                 } else {
                     //非教職員，即跳開
                     if ($user->disable == 1) {
-                        return back()->withErrors(['error' => '你被停用了']);
+                        return redirect()->route('logins')->withErrors(['error' => '你被停用了']);
                     }
                     //有此使用者，即更新使用者資料
                     $att['name'] = $obj['name'];
@@ -108,7 +108,7 @@ class LoginController extends Controller
                     $user->update($att);
                 }
             } else {
-                return back()->withErrors(['error' => 'GSuite認證錯誤']);
+                return redirect()->route('logins')->withErrors(['error' => 'GSuite認證錯誤']);
             }
         } elseif ($request->input('login_type') == 'local') {
             //是否已有此帳號
@@ -119,10 +119,10 @@ class LoginController extends Controller
                 ->where('login_type', 'local')
                 ->first();
             if (empty($user)) {
-                return back()->withErrors(['error' => '本機帳號密碼錯誤']);
+                return redirect()->route('logins')->withErrors(['error' => '本機帳號密碼錯誤']);
             } else {
                 if ($user->disable == 1) {
-                    return back()->withErrors(['error' => '你被停用了']);
+                    return redirect()->route('logins')->withErrors(['error' => '你被停用了']);
                 }
             }
         }
@@ -135,7 +135,7 @@ class LoginController extends Controller
                 return redirect()->route('index');
             }
         } else {
-            return back()->withErrors(['error' => '帳號密碼錯誤']);
+            return redirect()->route('logins')->withErrors(['error' => '帳號密碼錯誤']);
         }
     }
 
