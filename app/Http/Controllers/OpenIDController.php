@@ -119,7 +119,7 @@ class OpenIDController extends Controller
       $user_obj['title'] = $edufile['titles'][0]['titles'][0];
       $user_obj['kind'] = "";   
       
-      if ($user_obj['kind'] == "學生") {
+      if ($user_obj['title'] == "學生") {
         $url = "https://chc.sso.edu.tw/oidc/v1/logout-to-go";
         $post_logout_redirect_uri = env('APP_URL')."/logins";
         $id_token_hint = session('id_token');
