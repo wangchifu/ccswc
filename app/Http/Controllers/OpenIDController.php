@@ -116,7 +116,8 @@ class OpenIDController extends Controller
       $user_obj['name'] = $userinfo['name'];      
       $user_obj['personid'] = $profile['personid'];
       $user_obj['code'] = $edufile['schoolid'];      
-      $user_obj['kind'] = $edufile['titles'][0]['titles'][1];   
+      $user_obj['title'] = $edufile['titles'][0]['titles'][0];
+      $user_obj['kind'] = "";   
       
       if ($user_obj['kind'] == "學生") {
         $url = "https://chc.sso.edu.tw/oidc/v1/logout-to-go";
@@ -124,19 +125,13 @@ class OpenIDController extends Controller
         $id_token_hint = session('id_token');
         $link = $url . "?post_logout_redirect_uri=".$post_logout_redirect_uri."&id_token_hint=" . $id_token_hint;
         return redirect($link)->withErrors(['error' => '學生禁止登入']);     
+      }else{
+        $user_obj['kind'] = $edufile['titles'][0]['titles'][1]; 
       }               
-      $user_obj['title'] = $edufile['titles'][0]['titles'][0];
+      
 
         //學生禁止訪問
-        if ($user_obj['success']) {
-
-            if ($user_obj['kind'] == "學生") {
-              $url = "https://chc.sso.edu.tw/oidc/v1/logout-to-go";
-              $post_logout_redirect_uri = env('APP_URL')."/logins";
-              $id_token_hint = session('id_token');
-              $link = $url . "?post_logout_redirect_uri=".$post_logout_redirect_uri."&id_token_hint=" . $id_token_hint;
-              return redirect($link)->withErrors(['error' => '學生禁止登入']);              
-            }             
+        if ($user_obj['success']) {              
             $codes = config('ccswc.codes');
             if ($user_obj['code'] == '079998' or $user_obj['code'] == '079999' or in_array($user_obj['code'], $codes)) {
               
